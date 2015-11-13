@@ -2,6 +2,7 @@
     "name": "flyingbono/smart-bot",
     "description": "Smart multilinguage bot responder implemented in PHP, with learning capabilities",
     "keywords": ["bot", "learn", "chat", "php"],
+    "version": "0.1",
     "authors": [
         {
             "name": "Bruno VIBERT",
