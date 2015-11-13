@@ -1,0 +1,15 @@
+{
+    "name": "flyingbono/smart-bot",
+    "description": "Smart multilinguage bot responder implemented in PHP, with learning capabilities",
+    "type": "PHP Library",
+    "require": {
+        "php-di/php-di": "^5.1"
+    },
+    "license": "Apache License 2.0",
+    "authors": [
+        {
+            "name": "Bruno VIBERT",
+            "email": "bruno.vibert@bonobox.fr"
+        }
+    ]
+}
