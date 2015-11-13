@@ -13,7 +13,7 @@
         "php": ">=5.5.13",
         "php-di/php-di": "^5.1"
     },
-    "license": "Apache License 2.0",
+    "license": "Apache-2.0",
     "repositories": [
         {
             "type": "package",
