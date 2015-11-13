@@ -3,6 +3,7 @@
     "description": "Smart multilinguage bot responder implemented in PHP, with learning capabilities",
     "type": "PHP Library",
     "require": {
+        "php": ">=5.5.13",
         "php-di/php-di": "^5.1"
     },
     "license": "Apache License 2.0",
