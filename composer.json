@@ -28,18 +28,18 @@
                 "source": {
                     "url": "https://github.com/flyingbono/SmartBot.git",
                     "type": "vcs"
-                },
-                "autoload": {
-                    "psr-0": {
-                        "SmartBot":        "lib/SmartBot"
-                    },
-                    "psr-4" : {
-                        "SmartBot\\" : "lib/SmartBot",
-                        "SmartBot\\Bot\\" : "lib/SmartBot/Bot"
-                    }
                 }
             }
         }
-    ]
+    ],
+    "autoload": {
+        "psr-0": {
+            "SmartBot":        "lib/SmartBot"
+        },
+        "psr-4" : {
+            "SmartBot\\" : "lib/SmartBot",
+            "SmartBot\\Bot\\" : "lib/SmartBot/Bot"
+        }
+    }
     
 }
