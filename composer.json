@@ -31,7 +31,8 @@
                 },
                 "autoload": {
                     "psr-4" : {
-                        "SmartBot\\" : "lib/SmartBot"
+                        "SmartBot\\" : "lib/SmartBot",
+                        "SmartBot\\Bot\\" : "lib/SmartBot/Bot"
                     }
                 }
             }
