@@ -1,12 +1,13 @@
-# smartbot
-Smart multilinguage bot responder implemented in PHP, with learning capabilities
+# SmartBot
 
-Install :
+Multilinguage bot responder implemented in PHP, with learning capabilities
+
+### Installation :
 ```
 composer.phar require flyingbono/smart-bot
 ```
 
-Basic usage :
+### Basic usage :
 
 ```php
 <?php
