@@ -91,6 +91,7 @@ class Bot {
     protected function _loadOptions( array $options = array() ){
         foreach( $options as $key => $option ){
             switch(strtolower($key)){
+                
                 case 'listener':
                     $listener = new $option($this);
                     $listener -> initialize();
@@ -100,8 +101,18 @@ class Bot {
                     $items = include $option;
                     $this -> getBrain() -> getMemory() -> addInnateItems($items);
                     break;
+                    
+                case 'context':
+                    $this -> addContext($option);
+                    break;
+                    
+                case 'caller':
+                    $this -> setCaller($option);
+                    break;
             }
         }
+        
+        return $this;
     }
     
     public function setInnateMemory( $memoryFile ){
