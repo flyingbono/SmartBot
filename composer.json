@@ -30,6 +30,9 @@
                     "type": "vcs"
                 },
                 "autoload": {
+                    "psr-0": {
+                        "SmartBot":        "lib/SmartBot"
+                    },
                     "psr-4" : {
                         "SmartBot\\" : "lib/SmartBot",
                         "SmartBot\\Bot\\" : "lib/SmartBot/Bot"
