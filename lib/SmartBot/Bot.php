@@ -13,6 +13,7 @@ use DI\ContainerBuilder;
 
 class Bot {
     
+    private $_defaultListenerClass = 'SmartBot\Bot\Listener\EnUSListener';
     
     private $_di;
     
@@ -23,32 +24,37 @@ class Bot {
      */
     protected $_brain;
     
-    protected $_path;
-    
-    protected $_language = array();
-    
+    protected $_dataPath;
+        
     protected $_contexts = array();
     
     protected $_caller = null;
     
     protected $_handleDirs = array();
     
-    public function __construct( $path, $listenerClass = 'SmartBot\Bot\Listener\EnUSListener' ){
+    protected $_listenersDirs = array();
+    protected $_listenerInstances = array();
+    protected $_listeners = array();
+    
+    protected $_responders = array();
+    
+    public function __construct( $dataPath, array $options = array() ){
                 
+        
         $builder = new ContainerBuilder;
         $builder -> useAnnotations(true);
         $builder -> addDefinitions( __DIR__.'/Di/Config.php');
         
         $this -> _di    = $builder->build();       
-        $this -> _path  = realpath($path);
+        $this -> _dataPath  = realpath($dataPath);
         
-        if( false == is_dir( $this -> _path )) 
-            throw new Exception('SmartBot : path doesn\'t exists');
+        if( false == is_dir( $this -> _dataPath )) 
+            throw new Exception('SmartBot : data path doesn\'t exists');
         
-        $test = $this -> _path.'/'.uniqid();
+        $test = $this -> _dataPath.'/'.uniqid();
         @file_put_contents( $test, 'SmartBot test');
         if (false == file_exists($test) )
-            throw new Exception('SmartBot : path is not writtable');
+            throw new Exception('SmartBot : data path is not writtable');
         
         @unlink($test);
               
@@ -62,21 +68,64 @@ class Bot {
         
         // Add the  main listener
         $this -> addListenerDir(__DIR__.'/Bot/Listener' );
-        $listener = new $listenerClass($this);
-        $listener -> initialize();
         
-        
+        // Initialize the brain
         $this -> _brain -> initialize();
+        
+        // Load options
+        $this -> _loadOptions($options);
+        
+        // Load acquired memory
+        $this -> _brain -> load();
+        
+        // Check if there is at least 1 listener
+        if( count( $this -> _listeners ) == 0 ) {
+            // add a default listener
+            $listener = new $this -> _defaultListenerClass($this);
+            $listener -> initialize();
+        }
+
+        
     }
     
+    protected function _loadOptions( array $options = array() ){
+        foreach( $options as $key => $option ){
+            switch(strtolower($key)){
+                case 'listener':
+                    $listener = new $option($this);
+                    $listener -> initialize();
+                    break;
+                    
+                case 'innate':
+                    $items = include $option;
+                    $this -> getBrain() -> getMemory() -> addInnateItems($items);
+                    break;
+            }
+        }
+    }
+    
+    public function setInnateMemory( $memoryFile ){
+        
+        if( false == file_exists($memoryFile) ) {
+            error_log(sprintf('SmartBot : innate memory file "%s"does not exists', $memoryFile ) );
+            return $this;
+        }
+        
+        if( false == is_readable($memoryFile) )
+            throw new Exception('SmartBot : innate memory file is not readable');
+        
+        
+            
+            
+    }
     
     public function learn( $what, $value ){
         $this -> getBrain() -> learn($what, $value);
         return $this;
     }
     
-    public function getPath(){
-        return $this -> _path;
+    public function getDataPath(){
+        return $this -> _dataPath;
     }
     
     public function getLanguage(){
@@ -137,13 +186,11 @@ class Bot {
     
     public function addListener( ListenerAbstract $listener ){
         
-        $this -> _listenerPlugins[] = $listener;
+        $this -> _listenerInstances[] = $listener;
         return $this;
     }
     
-    protected $_listenersDirs = array();
-    protected $_listenerPlugins;
-    protected $_listeners;
+
     
     public function addListenerDir( $dir ){
         $this ->_listenersDirs[] = $dir;
@@ -181,7 +228,7 @@ class Bot {
         return $this;
     }
     
-    protected $_responders = array();
+    
     
     /**
      * 
@@ -220,7 +267,7 @@ class Bot {
         return $this;
     }
     
-    public function talk( $message, $callerUid = null ){
+    public function talk( $input, $callerUid = null, $callback = null ){
         
         if( true == is_null($callerUid) )
             $callerUid = $this -> getCaller();
@@ -230,8 +277,11 @@ class Bot {
             
         $this -> setCaller($callerUid);
             
-        $output = $this ->  getBrain() -> input( $message );
+        $output = $this ->  getBrain() -> input( $input );
 
+       if( false === is_null($callback) && is_callable($callback) )
+           return $callback($input, $output );
+        
         return $output;
     }
     

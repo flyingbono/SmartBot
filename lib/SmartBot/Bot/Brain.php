@@ -28,14 +28,18 @@ class Brain extends \SmartBot\Di\Injectable {
     public function initialize(){
         
         $this -> _memory = $this -> _di -> get('Brain\Memory');
-        $this -> _memory -> load();
-        
-        $this -> learn('Time:hour', date('H:i'), Memory::RANGE_IMMEDIATE ); 
-        $this -> learn('Time:date', date('d/m/Y'), Memory::RANGE_IMMEDIATE );
-        
+
         return $this;
                
     }
+    
+    public function load(){
+        $this -> _memory -> load();
+        
+        $this -> learn('Time:hour', date('H:i'), Memory::RANGE_IMMEDIATE );
+        $this -> learn('Time:date', date('d/m/Y'), Memory::RANGE_IMMEDIATE );
+    }
+    
     
     /**
      * 

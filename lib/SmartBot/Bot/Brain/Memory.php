@@ -21,29 +21,44 @@ class Memory extends \SmartBot\Di\Injectable {
      */
     private $_items  = array();   
     
+    private $_acquiredMemoryFile;
+    
     public function __construct(){
         
     }
     
-    public function load() {
-        $ai     =   $this -> getDi() -> get('Bot');
-        $path   =  $ai -> getPath().'/memory/';
-        
-        
-        // loading innate memory
-        if( file_exists($path.'innate.php') ) {
-            foreach( include $path.'innate.php' as $item ){
+    public function addInnateItems( array $items ){
+        foreach( $items as $item ){
+            if( $item instanceof Item )
+            {
                 $item -> range  = self::RANGE_LONG;
                 $item -> type   = self::TYPE_INNATE;
                 
-                // @todo Ensure item is valid in current contexts (Person) ?
                 $this -> _addItem( $item );
             }
         }
+    }
+    
+    
+    public function load() {
+        $bot     =   $this -> getDi() -> get('Bot');
+        $this -> _acquiredMemoryFile   =  $bot -> getDataPath().'/smart-bot-memory-acquired.php';
+        
+        
+        // loading innate memory
+//         if( file_exists($path.'innate.php') ) {
+//             foreach( include $path.'innate.php' as $item ){
+//                 $item -> range  = self::RANGE_LONG;
+//                 $item -> type   = self::TYPE_INNATE;
+                
+//                 // @todo Ensure item is valid in current contexts (Person) ?
+//                 $this -> _addItem( $item );
+//             }
+//         }
         
         // loading acquired memory
-        if( file_exists($path.'acquired.php') ) {
-            foreach( include $path.'acquired.php' as $item ){
+        if( file_exists($this -> _acquiredMemoryFile) ) {
+            foreach( include $this -> _acquiredMemoryFile as $item ){
                 
                 $item -> type   = self::TYPE_ACQUIRED;
                 
@@ -78,8 +93,6 @@ class Memory extends \SmartBot\Di\Injectable {
         foreach( $this -> _items as $item ){
             /** @var Item $item */
            
-            
-            
             if( false == $item -> isCaller() )
                 continue;
             
@@ -210,21 +223,19 @@ class Memory extends \SmartBot\Di\Injectable {
     }
     
     public function flush() {
-        $ai     = $this -> getDi() -> get('Bot');
-        $path   = $ai -> getPath().'/memory/';
-        $file   = $path.'/acquired.php';
-        $backup = dirname($file).'/'.substr(basename($file), 0, -4).'.'.date('Ymdh').'.php';
+//         $ai     = $this -> getDi() -> get('Bot');
+
+        $backup = dirname($this -> _acquiredMemoryFile).'/'.substr(basename($this -> _acquiredMemoryFile), 0, -4).'.'.date('Ymdh').'.php';
         $data   = $this -> _dump();
         
-        
-        if( file_exists($file) ){
+        if( file_exists($this -> _acquiredMemoryFile) ){
             // backup memory file
-            @rename( $file, $backup );
+            @rename( $this -> _acquiredMemoryFile, $backup );
             if( false == file_exists($backup) )
                 throw new Exception('Cannot flush memory');
         }
         
-        file_put_contents($file, $data);
+        file_put_contents($this -> _acquiredMemoryFile, $data);
         
         return $this;
             
