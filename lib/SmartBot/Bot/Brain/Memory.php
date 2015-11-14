@@ -1,9 +1,31 @@
 <?php
+/*
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * This software consists of voluntary contributions made by many individuals
+ * and is licensed under the MIT license. For more information, see
+ * <https://github.com/flyingbono/SmartBot>.
+ */
 namespace SmartBot\Bot\Brain;
 
 use SmartBot\Bot\Brain\Memory\Item;
 use SmartBot\Bot\Exception;
 
+/**
+ * SmartBot Memory Class.
+ *
+ * @author Bruno VIBERT <bruno.vibert@bonobox.fr>
+ */
 class Memory extends \SmartBot\Di\Injectable {
     const TYPE_INNATE       = 'INNATE';
     const TYPE_ACQUIRED     = 'ACQUIRED';
@@ -21,12 +43,18 @@ class Memory extends \SmartBot\Di\Injectable {
      */
     private $_items  = array();   
     
+    /**
+     * The acquired memory data file
+     * 
+     * @var string
+     */
     private $_acquiredMemoryFile;
     
-    public function __construct(){
-        
-    }
-    
+    /**
+     * Add innate memory items
+     * @param array $items
+     * @return \SmartBot\Bot\Brain\Memory Provide a fluent interface
+     */
     public function addInnateItems( array $items ){
         foreach( $items as $item ){
             if( $item instanceof Item )
@@ -37,24 +65,19 @@ class Memory extends \SmartBot\Di\Injectable {
                 $this -> _addItem( $item );
             }
         }
+        
+        return $this;
     }
     
-    
+    /**
+     * Load acquired memory items
+     * 
+     * @todo Sort item  : recently acquired first
+     * @return \SmartBot\Bot\Brain\Memory Provide a fluent interface
+     */
     public function load() {
         $bot     =   $this -> getDi() -> get('Bot');
         $this -> _acquiredMemoryFile   =  $bot -> getDataPath().'/smart-bot-memory-acquired.php';
-        
-        
-        // loading innate memory
-//         if( file_exists($path.'innate.php') ) {
-//             foreach( include $path.'innate.php' as $item ){
-//                 $item -> range  = self::RANGE_LONG;
-//                 $item -> type   = self::TYPE_INNATE;
-                
-//                 // @todo Ensure item is valid in current contexts (Person) ?
-//                 $this -> _addItem( $item );
-//             }
-//         }
         
         // loading acquired memory
         if( file_exists($this -> _acquiredMemoryFile) ) {
@@ -68,11 +91,15 @@ class Memory extends \SmartBot\Di\Injectable {
             }
         }
         
-        // @todo Sort item  : recently acquired first
-//         var_dump($this->_items);
         return $this;
     }
     
+    /**
+     * Get a well formatted memory address
+     * 
+     * @param string $address
+     * @return string
+     */
     public function getAddress( $address ){
         $parts = explode(':', $address );
         if( $parts[0] == 'Caller' ) {
@@ -84,6 +111,12 @@ class Memory extends \SmartBot\Di\Injectable {
         return $address;
     }
     
+    /**
+     * Search a caller in memory items
+     * 
+     * @param string $someone
+     * @return \SmartBot\Bot\Brain\Memory\Item|\SmartBot\Bot\Brain\Memory\Item[]
+     */
     public function searchSomeone( $someone ){
       
         $someone = strtolower($someone);
@@ -98,8 +131,6 @@ class Memory extends \SmartBot\Di\Injectable {
             
             if( preg_match('/^Caller:([^:]+):(name)$/i', $item -> address ) )
             {
-        
-                
                 if(strtolower( $item -> getValue() ) == $someone)
                     return $item;
                 else if(false !== stripos($item -> getValue(), $someone) )
@@ -111,15 +142,19 @@ class Memory extends \SmartBot\Di\Injectable {
         return $results;
     }
     
+    /**
+     * Search a memory item by address
+     * @param string $address
+     * @param boolean $strict
+     * @return \SmartBot\Bot\Brain\Memory\Item
+     */
     public function search( $address, $strict = false ){
         
         if( ! $strict )
             $address = $this -> getAddress($address);
-//          echo '> search address :'.$address.PHP_EOL;
             
         foreach( $this -> _items as $item ){
             /** @var Item $item */
-//             echo 'compare *'.$item -> address .'* / *'. $address.'*'.PHP_EOL;
             if( $item -> address == $address ) {
                 return $item;
             }
@@ -128,6 +163,14 @@ class Memory extends \SmartBot\Di\Injectable {
         return Item::factory(); // return an empty item
     }
     
+    /**
+     * Integrate a new memory item
+     * 
+     * @param string $address
+     * @param string $value
+     * @param string $range
+     * @return \SmartBot\Bot\Brain\Memory\Item
+     */
     public function acquire( $address, $value, $range ) {      
         $item = $this -> search($address);
 
@@ -142,30 +185,40 @@ class Memory extends \SmartBot\Di\Injectable {
             $this -> _items[] = $item;
         }
         
-        
         return $item;
     }
     
+    /**
+     * I don't remember...
+     * 
+     * @param string $str
+     * @return string
+     */
     public function parse( $str ){
         
         preg_match_all('/\{[^\}]+\}/', $str, $matches );
-//         var_dump($matches);
-        foreach($matches[0] as $variable ){
+        foreach($matches[0] as $variable ) {
             $address = substr($variable, 1, -1 );
-     
             $str = str_replace($variable, $this -> get($address) -> getValue(), $str);
         }
         
         return $str;
     }
     
+    /**
+     * Alias of search
+     * 
+     * @deprecated
+     * @param string $something
+     */
     public function get($something){
         return $this ->search($something);
     }
     
     /**
-
-     * @param string $something
+     * Check if there is a memory item @ this address
+     * 
+     * @param string $something The address
      * @return boolean
      */
     public function knows( $something ){
@@ -173,23 +226,34 @@ class Memory extends \SmartBot\Di\Injectable {
         $item = $this ->search($something);
         
         return $item -> type != Memory::TYPE_NONE;
-        
     }
     
+    /**
+     * Check if there is *not* a memory item @ this address
+     * 
+     * @param string $something The address
+     * @return boolean
+     */
     public function dontKnows( $something ){
         $item = $this ->_search($something);
         
         return $item -> type == Memory::TYPE_NONE;
     }
     
+    /**
+     * Add a memory item
+     * 
+     * @param \SmartBot\Bot\Brain\Memory\Item $item
+     */
     private function _addItem( Item $item ){
         $this -> _items[] = $item;
     }
     
-    private function _learn( ){
-        
-    }
-    
+    /**
+     * Get a memory dump (acquired items only, excluding immediate range items)
+     * 
+     * @return string
+     */
     private function _dump(){
         $data  = '<?php'.PHP_EOL;
         $data .= 'return ['.PHP_EOL;
@@ -222,8 +286,13 @@ class Memory extends \SmartBot\Di\Injectable {
         return $data;
     }
     
+    /**
+     * Flush memory dump the the acquired memory file
+     * 
+     * @throws Exception
+     * @return \SmartBot\Bot\Brain\Memory Provide a fluent interface
+     */
     public function flush() {
-//         $ai     = $this -> getDi() -> get('Bot');
 
         $backup = dirname($this -> _acquiredMemoryFile).'/'.substr(basename($this -> _acquiredMemoryFile), 0, -4).'.'.date('Ymdh').'.php';
         $data   = $this -> _dump();
@@ -238,7 +307,6 @@ class Memory extends \SmartBot\Di\Injectable {
         file_put_contents($this -> _acquiredMemoryFile, $data);
         
         return $this;
-            
     }
     
 }
