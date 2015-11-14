@@ -30,8 +30,8 @@
                     "type": "vcs"
                 },
                 "autoload": {
-                    "psr-0" : {
-                        "Flyingbono\\SmartBot" : "lib"
+                    "psr-4" : {
+                        "SmartBot\\" : "lib/SmartBot"
                     }
                 }
             }
