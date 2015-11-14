@@ -13,12 +13,20 @@ composer.phar require flyingbono/smart-bot
 <?php
 require_once '../vendor/autoload.php';
 
+// Options : all are optionals
+$options = array(
+	'listener' 	=> 'SmartBot\Bot\Listener\EnUSListener', // default listener (default: EnUSListener)
+	'innate'	=> 'file.php', // Innate memory data (default: null)
+	'caller'	=> 'CallerUID', // ID of the person talking to the bot (default: null)
+	'context'	=> ['Humor:Funny'], // List of the bot contexts (users-defined)
+);
+
 $bot = new \SmartBot\Bot( 
-				// Data path for acquired memory storage)
-				'/tmp/smartbot-data/', 
-				
-				// Default listener
-				'SmartBot\Bot\Listener\EnUSListener' );
+	// Data path for acquired memory storage)
+	'/tmp/smartbot-data/', 
+	
+	// Bot options
+	$options );
 
 // Load innate memory (optionnal)
 // @see (documentation : todo)
@@ -45,7 +53,4 @@ $bot -> setCaller('Bruno VIBERT');
 $response = $bot -> talk('Hello !'); // Hello, Hi...
 $response = $bot -> talk('My name is John'); // Ok, John, I will remember that !
 $response = $bot -> talk('Hi'); // Hello, John
-
-
-
 ```
