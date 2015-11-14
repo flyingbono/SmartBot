@@ -14,7 +14,7 @@ composer.phar require flyingbono/smart-bot
 require_once '../vendor/autoload.php';
 
 $bot = new \SmartBot\Bot( 
-				// Data path (innate memory and acquired memory storage)
+				// Data path for acquired memory storage)
 				'/tmp/smartbot-data/', 
 				
 				// Default listener
