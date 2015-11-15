@@ -5,10 +5,17 @@ language: php
 php:
   - 5.5
 
+before_script:
+  - git config --global user.email "bruno.vibert@bonobox.fr"
+  - git config --global user.name "Bruno VIBERT"
+  
 script:
   - composer self-update
   - composer install
+  - composer require codeclimate/php-test-reporter --dev
   - phpunit -d date.timezone=Europe/Paris --configuration ./phpunit.xml
   - php ./vendor/bin/phpcs -np --standard=Zend ./lib/SmartBot/ > phpcs.log
   - php ./vendor/bin/phpcs --report-summary -np --standard=Zend ./lib/SmartBot/
 
+after_script:
+  - CODECLIMATE_REPO_TOKEN="..." php ./vendor/bin/test-reporter
