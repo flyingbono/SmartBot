@@ -8,7 +8,6 @@ php:
 script:
   - composer self-update
   - composer install
-#  - phpunit -d date.timezone=Australia/Sydney tests/AllTests.php
-#  - php ./vendor/bin/phpcs ./lib/SmartBot --standard=PHPCS --report=summary -np
+  - phpunit -d date.timezone=Europe/Paris --configuration ./phpunit.xml
   - php ./vendor/bin/phpcs --report-summary -np --standard=Zend ./lib/SmartBot/
 
