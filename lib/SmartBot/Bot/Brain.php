@@ -27,13 +27,14 @@ use SmartBot\Bot\Brain\Memory;
  *
  * @author Bruno VIBERT <bruno.vibert@bonobox.fr>
  */
-class Brain extends \SmartBot\Di\Injectable {
+class Brain extends \SmartBot\Di\Injectable
+{
     
     /**
      * Bot instance
      * 
      * @Inject("Bot")
-     * @var \SmartBot\Bot
+     * @var           \SmartBot\Bot
      */
     protected $_smartBot;
     
@@ -47,7 +48,8 @@ class Brain extends \SmartBot\Di\Injectable {
     /**
      * Brain class constructor
      */
-    public function __construct(){
+    public function __construct()
+    {
         // injectable properties are not available yet !
         
     }
@@ -57,7 +59,8 @@ class Brain extends \SmartBot\Di\Injectable {
      * 
      * @return \SmartBot\Bot\Brain Provide a fluent interface
      */
-    public function initialize(){
+    public function initialize()
+    {
         
         $this -> _memory = $this -> _di -> get('Brain\Memory');
 
@@ -69,11 +72,12 @@ class Brain extends \SmartBot\Di\Injectable {
      * 
      * @return \SmartBot\Bot\Brain Provide a fluent interface
      */
-    public function load(){
+    public function load()
+    {
         $this -> _memory -> load();
         
-        $this -> learn('Time:hour', date('H:i'), Memory::RANGE_IMMEDIATE );
-        $this -> learn('Time:date', date('d/m/Y'), Memory::RANGE_IMMEDIATE );
+        $this -> learn('Time:hour', date('H:i'), Memory::RANGE_IMMEDIATE);
+        $this -> learn('Time:date', date('d/m/Y'), Memory::RANGE_IMMEDIATE);
         
         return $this;
     }
@@ -84,48 +88,52 @@ class Brain extends \SmartBot\Di\Injectable {
      * 
      * @return \SmartBot\Bot\Brain\Memory
      */
-    public function getMemory(){
+    public function getMemory()
+    {
         return $this -> _memory;
     }
     
     /**
      * Learn something
      * 
-     * @param string $what Item address of what to learn
-     * @param string $value Item value
-     * @param string $range Item date-range accessibility
+     * @param  string $what  Item address of what to learn
+     * @param  string $value Item value
+     * @param  string $range Item date-range accessibility
      * @return \SmartBot\Bot\Brain Provide a fluent interface
      */
-    public function learn( $what, $value, $range = Memory::RANGE_LONG ) {
-        $this -> _memory -> acquire( $what, $value, $range );
+    public function learn( $what, $value, $range = Memory::RANGE_LONG ) 
+    {
+        $this -> _memory -> acquire($what, $value, $range);
         
         return $this;
     }
     
-    public function isRuleSatisfied( $rule ){
+    public function isRuleSatisfied( $rule )
+    {
         
-        if( true == is_null($rule) )
-            return true;
+        if(true == is_null($rule) ) {
+            return true; 
+        }
         
         $test = $rule;
-        preg_match_all('/([a-z]+)\(([^\&|\(\)]+)\)/i', $rule, $matches );
+        preg_match_all('/([a-z]+)\(([^\&|\(\)]+)\)/i', $rule, $matches);
         
         foreach( $matches[1] as $index => $method ){
             $str    = $matches[0][$index];
             $value  = trim($matches[2][$index]);
             
             switch( strtolower(trim($method)) ){
-                case 'hascontext':
-                    $test = str_replace($str, ($this->_smartBot -> hasContext($value))? ' true ':' false ', $test );
-                    break;
+            case 'hascontext':
+                $test = str_replace($str, ($this->_smartBot -> hasContext($value))? ' true ':' false ', $test);
+                break;
                     
-                case 'isknown':
-                    $test = str_replace($str, ($this-> _memory -> knows($value))? ' true ':' false ', $test );
-                    break;
+            case 'isknown':
+                $test = str_replace($str, ($this-> _memory -> knows($value))? ' true ':' false ', $test);
+                break;
                     
-                case 'isnotknown':
-                    $test = str_replace($str, (! $this-> _memory -> knows($value))? ' true ':' false ', $test );
-                    break;
+            case 'isnotknown':
+                $test = str_replace($str, (! $this-> _memory -> knows($value))? ' true ':' false ', $test);
+                break;
             }
             
         }
@@ -139,37 +147,40 @@ class Brain extends \SmartBot\Di\Injectable {
      * 
      * @return string
      */
-    public function input( $message ){
+    public function input( $message )
+    {
         $output = new Output;
                 
         $results = array();
         foreach ($this -> _smartBot -> getListeners() as $name => $config ) {
 
-            if( preg_match( $config['regex'], $message, $matches) ){
+            if(preg_match($config['regex'], $message, $matches) ) {
                 
-                if( $config['responder'] instanceof Responder )
-                    $response = $config['responder'] -> handle($message, array_slice($matches,1));
+                if($config['responder'] instanceof Responder ) {
+                    $response = $config['responder'] -> handle($message, array_slice($matches, 1)); 
+                }
                 else {
-                    $response = $config['responder']($message, array_slice($matches,1));
+                    $response = $config['responder']($message, array_slice($matches, 1));
                 }
                 switch( gettype($response) ) {
-                    case 'string':
-                        $results[] = $response;
-                        break;
-                    case 'array':
-                        $results = array_merge($results, $response);
-                        break;
+                case 'string':
+                    $results[] = $response;
+                    break;
+                case 'array':
+                    $results = array_merge($results, $response);
+                    break;
                 }
             }
         }
         $output -> setResults($results);
-        return $this -> _memory -> parse( (string) $output );
+        return $this -> _memory -> parse((string) $output);
     }
     
     /**
      * Class destructor : flush memory
      */
-    public function __destruct(){
+    public function __destruct()
+    {
         $this -> flush();
     }
    
@@ -178,7 +189,8 @@ class Brain extends \SmartBot\Di\Injectable {
      * 
      * @return \SmartBot\Bot\Brain Provide a fluent interface
      */
-    public function flush() {
+    public function flush() 
+    {
         
         $this -> _memory -> flush();
         return $this;

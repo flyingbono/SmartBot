@@ -1,18 +1,21 @@
 <?php
 namespace SmartBot\Bot\Brain;
 
-class Output {
+class Output
+{
     
     private $_results = array();
     
     
-    public function setResults( array $results = array() ) {
+    public function setResults( array $results = array() ) 
+    {
         $this -> _results = $results;
     }
     
-    public function getResult(){
+    public function getResult()
+    {
         
-        if( count($this -> _results) == 0 ) {
+        if(count($this -> _results) == 0 ) {
             // what to say...
             return '?';
         }
@@ -22,7 +25,8 @@ class Output {
         return $this -> _results[$index];
     }
     
-    public function __toString() {
+    public function __toString() 
+    {
         return $this -> getResult();
     }
     

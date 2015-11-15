@@ -23,12 +23,13 @@ namespace SmartBot\Bot;
  *
  * @author Bruno VIBERT <bruno.vibert@bonobox.fr>
  */
-class Utils {
+class Utils
+{
     
     /**
      * Camelize a string
      * 
-     * @param string $value
+     * @param  string $value
      * @return string
      */
     public static function camelize($value)

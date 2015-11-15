@@ -23,13 +23,14 @@ namespace SmartBot\Di;
  *
  * @author Bruno VIBERT <bruno.vibert@bonobox.fr>
  */
-class Injectable {
+class Injectable
+{
     
     /**
      * Dependency injector container
      * 
      * @Inject("DI")
-     * @var \DI\Container
+     * @var          \DI\Container
      */
     protected $_di;
     
@@ -39,7 +40,8 @@ class Injectable {
      * 
      * @return \DI\Container
      */
-    public function getDi(){
+    public function getDi()
+    {
         return $this -> _di;
     }
     
@@ -47,7 +49,8 @@ class Injectable {
      * Sets the dependency injector container
      * @param \DI\Container $di
      */
-    protected function setDi(\DI\Container $di){
+    protected function setDi(\DI\Container $di)
+    {
         $this -> _di = $di;
         return $this;
     }

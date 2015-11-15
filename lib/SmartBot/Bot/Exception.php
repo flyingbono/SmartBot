@@ -23,6 +23,7 @@ namespace SmartBot\Bot;
  *
  * @author Bruno VIBERT <bruno.vibert@bonobox.fr>
  */
-class Exception extends \Exception {
+class Exception extends \Exception
+{
     
 }

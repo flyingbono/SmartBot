@@ -23,7 +23,8 @@ namespace SmartBot\Bot;
  *
  * @author Bruno VIBERT <bruno.vibert@bonobox.fr>
  */
-interface ListenerInterface {
+interface ListenerInterface
+{
     
     /**
      * Add listeners

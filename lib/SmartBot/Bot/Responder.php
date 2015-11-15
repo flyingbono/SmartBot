@@ -26,7 +26,8 @@ use SmartBot\Bot\Responder\Response;
  *
  * @author Bruno VIBERT <bruno.vibert@bonobox.fr>
  */
-class Responder extends Injectable {
+class Responder extends Injectable
+{
     
     /**
      * Available responder responses
@@ -38,21 +39,24 @@ class Responder extends Injectable {
     /**
      * Class constructor
      */
-    public function __construct(){
+    public function __construct()
+    {
         
     }
     
     /**
      * Add a responder response
      * 
-     * @param string|array $responses
-     * @param string $rule
+     * @param  string|array $responses
+     * @param  string       $rule
      * @return \SmartBot\Bot\Responder Provide a fluent interface
      */
-    final public function add( $responses, $rule = null ){
+    final public function add( $responses, $rule = null )
+    {
         
-       if( false == is_array($responses) )
-           $responses = array($responses);
+        if(false == is_array($responses) ) {
+            $responses = array($responses); 
+        }
            
         foreach( $responses as $response ){
             $this -> _responses[] = new Response($response, $rule);
@@ -66,22 +70,24 @@ class Responder extends Injectable {
      * 
      * @return array
      */
-    public function getResponses(){
+    public function getResponses()
+    {
         return $this -> _responses;
     }
     
     /**
      * Handle an input message and returns the responses that satify rules
      * 
-     * @param string $message
-     * @param array $args Regex-captured arguments
+     * @param  string $message
+     * @param  array  $args    Regex-captured arguments
      * @return array
      */
-    public function handle( $message, $args = array() ){
+    public function handle( $message, $args = array() )
+    {
         $results = array();
         foreach( $this -> _responses as $response ){
-            if( $this -> getDi() -> get('Brain') -> isRuleSatisfied($response -> getRule() ) ){
-                $results[] = $this -> _parseArgs( $response -> getMessage(), $args );
+            if($this -> getDi() -> get('Brain') -> isRuleSatisfied($response -> getRule()) ) {
+                $results[] = $this -> _parseArgs($response -> getMessage(), $args);
             } else {
             }
         }
@@ -92,12 +98,13 @@ class Responder extends Injectable {
     /**
      * Parse a response strings and replace $[0-9] by the corresponding value in $args
      * 
-     * @param string $message
-     * @param array $args
+     * @param  string $message
+     * @param  array  $args
      * @return string
      */
-    protected function _parseArgs( $message, $args ){
-        preg_match_all('/\$([0-9])/', $message,$matches );
+    protected function _parseArgs( $message, $args )
+    {
+        preg_match_all('/\$([0-9])/', $message, $matches);
         foreach( $matches[0] as $index => $param ){
             $key   = (int) $matches[1][$index];
             $value = array_key_exists($key, $args)? $args[$key]:'';

@@ -25,7 +25,8 @@ use SmartBot\Bot;
  *
  * @author Bruno VIBERT <bruno.vibert@bonobox.fr>
  */
-abstract class ListenerAbstract {
+abstract class ListenerAbstract
+{
     /**
      * The SmartBot instance
      * 
@@ -52,7 +53,8 @@ abstract class ListenerAbstract {
      * 
      * @param \SmartBot\Bot $smartBot
      */
-    final public function __construct( \SmartBot\Bot $smartBot ){
+    final public function __construct( \SmartBot\Bot $smartBot )
+    {
         $this -> _smartBot = $smartBot;
         
         $this -> _loadConfig();
@@ -61,22 +63,24 @@ abstract class ListenerAbstract {
     /**
      * Get the responder singleton instance and load listen strings
      * 
-     * @param string $name
+     * @param  string $name
      * @return \SmartBot\Bot\Responder
      */
-    protected function responder($name){
+    protected function responder($name)
+    {
         $responder = $this -> _smartBot -> responder($name);
         
-        if( false == array_key_exists($name, $this -> _responders ) )
-        {
+        if(false == array_key_exists($name, $this -> _responders) ) {
             // append config to responder
             foreach( $this -> _config as $section => $data ){
                 
-                if( preg_match( sprintf('/^responder:%s$/i', $name ), $section ) ) 
-                    $responder -> add($data['msg']);
+                if(preg_match(sprintf('/^responder:%s$/i', $name), $section) ) { 
+                    $responder -> add($data['msg']); 
+                }
                 
-                if( preg_match( sprintf('/^responder:%s:(.*)$/i', $name ), $section, $matches ) ) 
-                    $responder -> add($data['msg'], $matches[1]);
+                if(preg_match(sprintf('/^responder:%s:(.*)$/i', $name), $section, $matches) ) { 
+                    $responder -> add($data['msg'], $matches[1]); 
+                }
 
             }
 
@@ -92,13 +96,15 @@ abstract class ListenerAbstract {
      * @throws Exception
      * @return \SmartBot\Bot\Responder
      */
-    final private function _loadConfig(){
-        $name = array_slice(explode('\\', get_class($this)),-1)[0];
+    final private function _loadConfig()
+    {
+        $name = array_slice(explode('\\', get_class($this)), -1)[0];
 
         $iniFile = __DIR__.'/Listener/Config/'.$name .'.ini';
 
-        if( false == file_exists($iniFile) )
-            throw new Exception(sprintf('Strings INI file not found for listener : %s', get_class($this) ));
+        if(false == file_exists($iniFile) ) {
+            throw new Exception(sprintf('Strings INI file not found for listener : %s', get_class($this))); 
+        }
         
             
         $this -> _config = parse_ini_file($iniFile, true);

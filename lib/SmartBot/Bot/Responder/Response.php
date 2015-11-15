@@ -1,7 +1,8 @@
 <?php
 namespace SmartBot\Bot\Responder;
 
-class Response {
+class Response
+{
     
     /**
      * The rules to check
@@ -16,17 +17,20 @@ class Response {
     protected $_message;
     
     
-    public function __construct( $message, $rule = null ){
+    public function __construct( $message, $rule = null )
+    {
         $this -> _rule     = $rule;
         $this -> _message  = $message;
         
     }
     
-    public function getRule(){
+    public function getRule()
+    {
         return $this -> _rule;
     }
     
-    public function getMessage(){
+    public function getMessage()
+    {
         return $this -> _message;
     }
 }

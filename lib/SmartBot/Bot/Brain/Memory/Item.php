@@ -3,7 +3,8 @@ namespace SmartBot\Bot\Brain\Memory;
 
 use SmartBot\Bot\Brain\Memory;
 
-class Item {
+class Item
+{
     
     const DATE_REGEX = '/^([0-9]{4})-([0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2}):([0-9]{2})$/';
     
@@ -14,20 +15,24 @@ class Item {
     public $type = Memory::TYPE_NONE;
     
     
-    private function __construct(){
+    private function __construct()
+    {
     
     }
     
-    public function isCaller(){
-        return (substr($this -> address, 0, 7 ) == 'Caller:');
+    public function isCaller()
+    {
+        return (substr($this -> address, 0, 7) == 'Caller:');
     }
     
-    public static function factory(array $data = array()){
+    public static function factory(array $data = array())
+    {
         $item = new self;
         foreach( $data as $key => $value ){
-            if( property_exists($item, $key)) {
-                if( preg_match( self::DATE_REGEX, $value ) )
-                    $value = new \DateTime($value);
+            if(property_exists($item, $key)) {
+                if(preg_match(self::DATE_REGEX, $value) ) {
+                    $value = new \DateTime($value); 
+                }
                 
                 $item -> $key = $value;
             }
@@ -36,9 +41,11 @@ class Item {
         return $item;
     }
     
-    public function getValue(){
-        if( $this -> value instanceof \DateTime )
-            return $this -> value -> format('d/m/Y');
+    public function getValue()
+    {
+        if($this -> value instanceof \DateTime ) {
+            return $this -> value -> format('d/m/Y'); 
+        }
         
         return $this -> value;
     }
