@@ -32,7 +32,7 @@ class Acquire extends Responder
      * {@inheritDoc}
      * @see \SmartBot\Bot\Responder::handle()
      */
-    public function handle($message, $args )
+    public function handle($message, $args = array() )
     {
         $this -> getDi() -> get('Brain') -> learn('Caller:'.$args[0], $args[1]);
         return;
