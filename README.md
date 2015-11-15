@@ -3,7 +3,7 @@
 Multilinguage bot responder implemented in PHP, with learning capabilities
 
 
-[![Build Status](https://api.travis-ci.org/flyingbono/SmartBot.svg?branch=dev-master)](https://travis-ci.org/flyingbono/SmartBot)
+[![Build Status](https://travis-ci.org/flyingbono/SmartBot.svg)](https://travis-ci.org/flyingbono/SmartBot)
 
 ### Installation :
 ``` sh
