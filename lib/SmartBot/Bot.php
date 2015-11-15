@@ -126,13 +126,13 @@ class Bot
         
         // Test data path
         if (false == is_dir($this -> _dataPath)) { 
-            throw new Exception('SmartBot : data path doesn\'t exists'); 
+            throw new Exception(sprintf('SmartBot : data path "%s" doesn\'t exists',$this -> _dataPath)); 
         }
         
         $test = $this -> _dataPath.'/'.uniqid();
         @file_put_contents($test, 'SmartBot test');
         if (false == file_exists($test) ) {
-            throw new Exception('SmartBot : data path is not writtable'); 
+            throw new Exception(sprintf('SmartBot : data path "%s" is not writtable',$this -> _dataPath)); 
         }
         
         @unlink($test);
