@@ -18,4 +18,4 @@ script:
   - php ./vendor/bin/phpcs --report-summary -np --standard=Zend ./lib/SmartBot/
 
 after_script:
-  - CODECLIMATE_REPO_TOKEN="..." php ./vendor/bin/test-reporter
+  - CODECLIMATE_REPO_TOKEN=09e2accfbf363eb43b266caee70f4b1d0df211bf3fa0c8ba791e3a7f71ee8e3c ./vendor/bin/test-reporter 
