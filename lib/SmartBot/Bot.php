@@ -122,17 +122,17 @@ class Bot
         $builder -> addDefinitions(__DIR__.'/Di/Config.php');
         
         $this -> _di    = $builder->build();       
-        $this -> _dataPath  = realpath($dataPath);
+        $this -> _dataPath  = $dataPath;
         
         // Test data path
         if (false == is_dir($this -> _dataPath)) { 
-            throw new Exception(sprintf('SmartBot : data path "%s" doesn\'t exists',$this -> _dataPath)); 
+            throw new Exception(sprintf('SmartBot : data path "%s" doesn\'t exists', $this -> _dataPath)); 
         }
         
         $test = $this -> _dataPath.'/'.uniqid();
         @file_put_contents($test, 'SmartBot test');
         if (false == file_exists($test) ) {
-            throw new Exception(sprintf('SmartBot : data path "%s" is not writtable',$this -> _dataPath)); 
+            throw new Exception(sprintf('SmartBot : data path "%s" is not writtable', $this -> _dataPath)); 
         }
         
         @unlink($test);

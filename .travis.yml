@@ -9,5 +9,6 @@ script:
   - composer self-update
   - composer install
   - phpunit -d date.timezone=Europe/Paris --configuration ./phpunit.xml
+  - php ./vendor/bin/phpcs -np --standard=Zend ./lib/SmartBot/ > phpcs.log
   - php ./vendor/bin/phpcs --report-summary -np --standard=Zend ./lib/SmartBot/
 
