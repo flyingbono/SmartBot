@@ -18,7 +18,10 @@
         "php": ">=5.5.13",
         "php-di/php-di": "^5.1"
     },
-    
+    "require-dev": {
+        "squizlabs/php_codesniffer": "2.*",
+        "doctrine/annotations": "~1.2"
+    },
     "support": {
         "issues": "https://github.com/flyingbono/SmartBot/issues",
         "wiki": "https://github.com/flyingbono/SmartBot/wiki",
