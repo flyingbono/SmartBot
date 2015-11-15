@@ -32,7 +32,8 @@ use DI\ContainerBuilder;
  *
  * @author Bruno VIBERT <bruno.vibert@bonobox.fr>
  */
-class Bot {
+class Bot
+{
     
     /**
      * Default listener class (if not sets)
@@ -108,41 +109,44 @@ class Bot {
     /**
      * Bot Class constructor
      * 
-     * @param string $dataPath
-     * @param array $options
+     * @param  string $dataPath
+     * @param  array  $options
      * @throws Exception
      */
-    public function __construct( $dataPath, array $options = array() ) {
+    public function __construct( $dataPath, array $options = array() ) 
+    {
                 
         // Loading DI container
         $builder = new ContainerBuilder;
         $builder -> useAnnotations(true);
-        $builder -> addDefinitions( __DIR__.'/Di/Config.php');
+        $builder -> addDefinitions(__DIR__.'/Di/Config.php');
         
         $this -> _di    = $builder->build();       
         $this -> _dataPath  = realpath($dataPath);
         
         // Test data path
-        if( false == is_dir( $this -> _dataPath )) 
-            throw new Exception('SmartBot : data path doesn\'t exists');
+        if(false == is_dir($this -> _dataPath)) { 
+            throw new Exception('SmartBot : data path doesn\'t exists'); 
+        }
         
         $test = $this -> _dataPath.'/'.uniqid();
-        @file_put_contents( $test, 'SmartBot test');
-        if (false == file_exists($test) )
-            throw new Exception('SmartBot : data path is not writtable');
+        @file_put_contents($test, 'SmartBot test');
+        if (false == file_exists($test) ) {
+            throw new Exception('SmartBot : data path is not writtable'); 
+        }
         
         @unlink($test);
               
         // Register objects in DI
         $this -> _di -> set('Bot', $this);
         $this -> _di -> set('DI', $this -> _di);
-        $this -> _brain = $this -> _di -> get('Brain' );
+        $this -> _brain = $this -> _di -> get('Brain');
         
         // Create the acquire responder
         $this -> _responders['acquire'] = $this -> _di -> get('Responder\Acquire');
         
         // Add the  main listener
-        $this -> addListenerDir(__DIR__.'/Bot/Listener' );
+        $this -> addListenerDir(__DIR__.'/Bot/Listener');
         
         // Initialize the brain
         $this -> _brain -> initialize();
@@ -154,7 +158,7 @@ class Bot {
         $this -> _brain -> load();
         
         // Check if there is at least 1 listener
-        if( count( $this -> _listeners ) == 0 ) {
+        if(count($this -> _listeners) == 0 ) {
             // add a default listener
             $listener = new $this -> _defaultListenerClass($this);
             $listener -> initialize();
@@ -164,30 +168,31 @@ class Bot {
     /**
      * Load options passed in the class constructor
      * 
-     * @param array $options
+     * @param  array $options
      * @return \SmartBot\Bot Provide a fluent interface
      */
-    protected function _loadOptions( array $options = array() ){
+    protected function _loadOptions( array $options = array() )
+    {
         foreach( $options as $key => $option ){
             switch(strtolower($key)){
                 
-                case 'listener':
-                    $listener = new $option($this);
-                    $listener -> initialize();
-                    break;
+            case 'listener':
+                $listener = new $option($this);
+                $listener -> initialize();
+                break;
                     
-                case 'innate':
-                    $items = include $option;
-                    $this -> getBrain() -> getMemory() -> addInnateItems($items);
-                    break;
+            case 'innate':
+                $items = include $option;
+                $this -> getBrain() -> getMemory() -> addInnateItems($items);
+                break;
                     
-                case 'context':
-                    $this -> addContext($option);
-                    break;
+            case 'context':
+                $this -> addContext($option);
+                break;
                     
-                case 'caller':
-                    $this -> setCaller($option);
-                    break;
+            case 'caller':
+                $this -> setCaller($option);
+                break;
             }
         }
         
@@ -197,11 +202,12 @@ class Bot {
     /**
      * Learn something
      * 
-     * @param string $what Adress of the memory item
-     * @param string $value Value of the item
+     * @param  string $what  Adress of the memory item
+     * @param  string $value Value of the item
      * @return \SmartBot\Bot Provide a fluent interface
      */
-    public function learn( $what, $value ) {
+    public function learn( $what, $value ) 
+    {
         $this -> getBrain() -> learn($what, $value);
         return $this;
     }
@@ -210,7 +216,8 @@ class Bot {
     /**
      * Get the bot data path
      */
-    public function getDataPath() {
+    public function getDataPath() 
+    {
         return $this -> _dataPath;
     }
     
@@ -220,7 +227,8 @@ class Bot {
      * 
      * @return \SmartBot\Bot\Brain
      */
-    public function getBrain() {
+    public function getBrain() 
+    {
         return $this -> _di -> get('Brain');
     }
     
@@ -229,7 +237,8 @@ class Bot {
      * 
      * @return string
      */
-    public function getCaller(){
+    public function getCaller()
+    {
         return $this -> _caller;
     }
     
@@ -237,19 +246,23 @@ class Bot {
      * Add a bot user-defined context
      * 
      * @param string|array $name The name of the context (ie Humor:Hungry)
+     * 
      * @return \SmartBot\Bot Provide a fluent interface
      */
-    public function addContext( $name ){
+    public function addContext( $name )
+    {
         
-        if( is_array($name) ){
-            foreach( $name as $context )
-                $this -> addContext( $context );
+        if(is_array($name) ) {
+            foreach( $name as $context ) {
+                $this -> addContext($context); 
+            }
             
                 return $this;
         }
             
-        if( $this -> hasContext( $name ) )
-            return $this;
+        if($this -> hasContext($name) ) {
+            return $this; 
+        }
         
         $this -> _contexts[] = $name;
         
@@ -259,34 +272,37 @@ class Bot {
     /**
      * Check if the bot is in a particular context
      * 
-     * @param string $context
+     * @param  string $context
      * @return boolean
      */
-    public function hasContext( $context ) {
-        return in_array($context, $this -> _contexts );
+    public function hasContext( $context ) 
+    {
+        return in_array($context, $this -> _contexts);
     }
     
     /**
      * Get caller ID with the given address
      * 
-     * @param string $address An adress (ie: Caller:#I08098088:name)
+     * @param  string $address An adress (ie: Caller:#I08098088:name)
      * @return string The caller ID (ie: #I08098088)
      */
-    public function getCallerId( $address ){
-        return preg_replace('/caller:([^:]+):.*/i', '\\1', $address );
+    public function getCallerId( $address )
+    {
+        return preg_replace('/caller:([^:]+):.*/i', '\\1', $address);
     }
     
     /**
      * Get a caller property
      * 
-     * @param string $callerId
-     * @param string $property
+     * @param  string $callerId
+     * @param  string $property
      * @return mixed
      */
-    public function getCallerProperty( $callerId, $property ){
-        $address = sprintf('Caller:%s:%s', $callerId, $property );
+    public function getCallerProperty( $callerId, $property )
+    {
+        $address = sprintf('Caller:%s:%s', $callerId, $property);
         
-        $item = $this -> getBrain() -> getMemory() -> search($address, true );
+        $item = $this -> getBrain() -> getMemory() -> search($address, true);
         
         return $item -> getValue();
         
@@ -295,10 +311,11 @@ class Bot {
     /**
      * Add a listener
      * 
-     * @param ListenerAbstract $listener
+     * @param  ListenerAbstract $listener
      * @return \SmartBot\Bot Provide a fluent interface
      */
-    public function addListener( ListenerAbstract $listener ){
+    public function addListener( ListenerAbstract $listener )
+    {
         
         $this -> _listenerInstances[] = $listener;
         return $this;
@@ -308,10 +325,11 @@ class Bot {
     /**
      * Add a listener directory
      * 
-     * @param string $dir
+     * @param  string $dir
      * @return \SmartBot\Bot Provide a fluent interface
      */
-    public function addListenerDir( $dir ){
+    public function addListenerDir( $dir )
+    {
         $this ->_listenersDirs[] = $dir;
         return $this;
     }
@@ -321,7 +339,8 @@ class Bot {
      * 
      * @return array
      */
-    public function getListeners(){
+    public function getListeners()
+    {
         return $this -> _listeners;
     }
     
@@ -330,22 +349,25 @@ class Bot {
      * 
      * @return Responder[]
      */
-    public function getResponders(){
+    public function getResponders()
+    {
         return $this -> _responders;
     }
     
     /**
      * Listen regex and map to responders
      * 
-     * @param array $regex
-     * @param Responder|Responder[] $responders
+     * @param  array                 $regex
+     * @param  Responder|Responder[] $responders
      * @return \SmartBot\Bot Provide a fluent interface
      */
-    public function listen( array $regex, $responders ){
+    public function listen( array $regex, $responders )
+    {
         
-        if( true == is_array($responders) ) {
-            foreach( $responders as $responder )
-                $this -> listen($regex, $responder );
+        if(true == is_array($responders) ) {
+            foreach( $responders as $responder ) {
+                $this -> listen($regex, $responder); 
+            }
             
             return $this;
         }
@@ -367,12 +389,14 @@ class Bot {
     /**
      * Get the responder singleton by name
      * 
-     * @param string $name
+     * @param  string $name
      * @return \SmartBot\Bot\Responder
      */
-    public function responder( $name ){
-        if( true == array_key_exists($name, $this -> _responders) )
-            return $this -> _responders[$name];
+    public function responder( $name )
+    {
+        if(true == array_key_exists($name, $this -> _responders) ) {
+            return $this -> _responders[$name]; 
+        }
         
         $responder = $this -> _di -> make('Responder');
         $this -> _responders[$name] = $responder;  
@@ -384,10 +408,11 @@ class Bot {
     /**
      * Find a caller by its name
      * 
-     * @param string $caller
+     * @param  string $caller
      * @return \SmartBot\Bot\Brain\Memory\Item|\SmartBot\Bot\Brain\Memory\Item[]
      */
-    public function findCaller( $caller ){
+    public function findCaller( $caller )
+    {
         $items = $this -> getBrain() -> getMemory() -> searchSomeone($caller);
 
         return $items;  
@@ -398,17 +423,19 @@ class Bot {
      * 
      * @return array
      */
-    public function getContexts(){
+    public function getContexts()
+    {
         return $this -> _contexts;
     }
     
     /**
      * Sets the current bot caller
      * 
-     * @param string $callerUid
+     * @param  string $callerUid
      * @return \SmartBot\Bot Provide a fluent interface
      */
-    public function setCaller( $callerUid ){
+    public function setCaller( $callerUid )
+    {
         $this -> _caller = $callerUid;
         
         return $this;
@@ -417,25 +444,29 @@ class Bot {
     /**
      * Talk to the bot
      * 
-     * @param string $input 
-     * @param string $callerUid
-     * @param function $callback 
+     * @param  string   $input 
+     * @param  string   $callerUid
+     * @param  function $callback 
      * @return string|mixed
      */
-    public function talk( $input, $callerUid = null, $callback = null ){
+    public function talk( $input, $callerUid = null, $callback = null )
+    {
         
-        if( true == is_null($callerUid) )
+        if (true === is_null($callerUid)) {
             $callerUid = $this -> getCaller();
-        
-        if( true == is_null($callerUid) )
+        }
+
+        if (true === is_null($callerUid)) {
             return 'Who is talking to me ??';
+        }
             
         $this -> setCaller($callerUid);
             
-        $output = $this ->  getBrain() -> input( $input );
+        $output = $this ->  getBrain() -> input($input);
 
-       if( false === is_null($callback) && is_callable($callback) )
-           return $callback($input, $output );
+        if(false === is_null($callback) && is_callable($callback) ) {
+            return $callback($input, $output ); 
+        }
         
         return $output;
     }

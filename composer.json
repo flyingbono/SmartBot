@@ -18,16 +18,23 @@
         "php": ">=5.5.13",
         "php-di/php-di": "^5.1"
     },
+    
+    "support": {
+        "issues": "https://github.com/flyingbono/SmartBot/issues",
+        "wiki": "https://github.com/flyingbono/SmartBot/wiki",
+        "source": "https://github.com/flyingbono/SmartBot"
+    },
     "license": "Apache-2.0",
     "repositories": [
         {
             "type": "package",
             "package": {
                 "name": "flyingbono/smart-bot",
-                "version": "dev-master",
+                "version": "1.0.x-dev",
                 "source": {
                     "url": "https://github.com/flyingbono/SmartBot.git",
-                    "type": "vcs"
+                    "type": "git",
+                    "reference": "dev-master"
                 }
             }
         }
