@@ -2,9 +2,12 @@
 
 Multilinguage bot responder implemented in PHP, with learning capabilities
 
+
+[![Build Status](https://api.travis-ci.org/flyingbono/SmartBot.svg?branch=dev-master)](https://travis-ci.org/flyingbono/SmartBot)
+
 ### Installation :
-```
-composer.phar require flyingbono/smart-bot
+``` sh
+$ composer.phar require flyingbono/smart-bot
 ```
 
 ### Basic usage :
