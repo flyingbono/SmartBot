@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -58,8 +58,8 @@ class Memory extends \SmartBot\Di\Injectable
      */
     public function addInnateItems( array $items )
     {
-        foreach( $items as $item ){
-            if($item instanceof Item ) {
+        foreach ($items as $item) {
+            if ($item instanceof Item ) {
                 $item -> range  = self::RANGE_LONG;
                 $item -> type   = self::TYPE_INNATE;
                 
@@ -82,8 +82,8 @@ class Memory extends \SmartBot\Di\Injectable
         $this -> _acquiredMemoryFile   =  $bot -> getDataPath().'/smart-bot-memory-acquired.php';
         
         // loading acquired memory
-        if(file_exists($this -> _acquiredMemoryFile) ) {
-            foreach( include $this -> _acquiredMemoryFile as $item ){
+        if (file_exists($this -> _acquiredMemoryFile)) {
+            foreach (include $this -> _acquiredMemoryFile as $item) {
                 
                 $item -> type   = self::TYPE_ACQUIRED;
                 
@@ -105,7 +105,7 @@ class Memory extends \SmartBot\Di\Injectable
     public function getAddress( $address )
     {
         $parts = explode(':', $address);
-        if($parts[0] == 'Caller' ) {
+        if ($parts[0] == 'Caller') {
             unset($parts[0]);
             
             $address = join(':', array_merge(array('Caller', $this -> getDi() -> get('Bot')->getCaller() ), $parts));
@@ -122,26 +122,22 @@ class Memory extends \SmartBot\Di\Injectable
      */
     public function searchSomeone( $someone )
     {
-      
         $someone = strtolower($someone);
-        
         $results = array();
         
-        foreach( $this -> _items as $item ){
+        foreach ( $this -> _items as $item ) {
             /**
-* 
- * @var Item $item 
-*/
+            * @var Item $item 
+            */
            
-            if(false == $item -> isCaller() ) {
+            if (false == $item -> isCaller()) {
                 continue; 
             }
             
-            if(preg_match('/^Caller:([^:]+):(name)$/i', $item -> address) ) {
-                if(strtolower($item -> getValue()) == $someone) {
+            if (preg_match('/^Caller:([^:]+):(name)$/i', $item -> address)) {
+                if (strtolower($item -> getValue()) == $someone) {
                     return $item; 
-                }
-                else if(false !== stripos($item -> getValue(), $someone) ) {
+                } else if (false !== stripos($item -> getValue(), $someone) ) {
                     $results[] = $item; 
                 }
             }
@@ -160,16 +156,15 @@ class Memory extends \SmartBot\Di\Injectable
     public function search( $address, $strict = false )
     {
         
-        if(! $strict ) {
+        if (! $strict ) {
             $address = $this -> getAddress($address); 
         }
             
-        foreach( $this -> _items as $item ){
+        foreach ( $this -> _items as $item ) {
             /**
-* 
- * @var Item $item 
-*/
-            if($item -> address == $address ) {
+            * @var Item $item 
+            */
+            if ($item -> address == $address ) {
                 return $item;
             }
         }
@@ -192,7 +187,7 @@ class Memory extends \SmartBot\Di\Injectable
         $item -> value      = trim($value);
         $item -> range      = $range;
         
-        if($item -> type == self::TYPE_NONE ) {
+        if ($item -> type == self::TYPE_NONE ) {
             $item -> acquired   = new \DateTime;
             $item -> address    = $this -> getAddress($address);
             $item -> type       = self::TYPE_ACQUIRED;
@@ -213,7 +208,7 @@ class Memory extends \SmartBot\Di\Injectable
     {
         
         preg_match_all('/\{[^\}]+\}/', $str, $matches);
-        foreach($matches[0] as $variable ) {
+        foreach ($matches[0] as $variable ) {
             $address = substr($variable, 1, -1);
             $str = str_replace($variable, $this -> get($address) -> getValue(), $str);
         }
@@ -279,13 +274,17 @@ class Memory extends \SmartBot\Di\Injectable
         $data  = '<?php'.PHP_EOL;
         $data .= 'return ['.PHP_EOL;
         
-        foreach( $this -> _items as $item ) {
-            if($item -> type != self::TYPE_ACQUIRED ) {
+        foreach ($this -> _items as $item) {
+            /**
+             * @var Item $item
+             */
+            
+            if ($item -> type != self::TYPE_ACQUIRED) {
                 continue; 
             }
 
             // Do not rememer immediate items
-            if($item -> range == self::RANGE_IMMEDIATE ) {
+            if ($item -> range == self::RANGE_IMMEDIATE) {
                 continue; 
             }
                 
@@ -318,13 +317,15 @@ class Memory extends \SmartBot\Di\Injectable
     public function flush() 
     {
 
-        $backup = dirname($this -> _acquiredMemoryFile).'/'.substr(basename($this -> _acquiredMemoryFile), 0, -4).'.'.date('Ymdh').'.php';
+        $backup = dirname($this -> _acquiredMemoryFile).'/'.
+                    substr(basename($this -> _acquiredMemoryFile), 0, -4).
+                    '.'.date('Ymdh').'.php';
         $data   = $this -> _dump();
         
-        if(file_exists($this -> _acquiredMemoryFile) ) {
+        if (file_exists($this -> _acquiredMemoryFile)) {
             // backup memory file
             @rename($this -> _acquiredMemoryFile, $backup);
-            if(false == file_exists($backup) ) {
+            if (false == file_exists($backup)) {
                 throw new Exception('Cannot flush memory'); 
             }
         }

@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -28,30 +28,31 @@ class Injectable
     
     /**
      * Dependency injector container
-     * 
+     *
      * @Inject("DI")
-     * @var          \DI\Container
+     *
+     * @var \DI\Container
      */
     protected $_di;
     
-    
     /**
      * Get the dependency injector container
-     * 
+     *
      * @return \DI\Container
      */
-    public function getDi()
+    public function getDi() 
     {
-        return $this -> _di;
+        return $this->_di;
     }
     
     /**
      * Sets the dependency injector container
-     * @param \DI\Container $di
+     *
+     * @param \DI\Container $di            
      */
-    protected function setDi(\DI\Container $di)
+    protected function setDi(\DI\Container $di) 
     {
-        $this -> _di = $di;
+        $this->_di = $di;
         return $this;
     }
 }

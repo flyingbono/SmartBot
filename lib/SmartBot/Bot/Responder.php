@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -54,11 +54,11 @@ class Responder extends Injectable
     final public function add( $responses, $rule = null )
     {
         
-        if(false == is_array($responses) ) {
+        if (false == is_array($responses) ) {
             $responses = array($responses); 
         }
            
-        foreach( $responses as $response ){
+        foreach ( $responses as $response ) {
             $this -> _responses[] = new Response($response, $rule);
         }
         
@@ -85,8 +85,8 @@ class Responder extends Injectable
     public function handle( $message, $args = array() )
     {
         $results = array();
-        foreach( $this -> _responses as $response ){
-            if($this -> getDi() -> get('Brain') -> isRuleSatisfied($response -> getRule()) ) {
+        foreach ( $this -> _responses as $response ) {
+            if ($this -> getDi() -> get('Brain') -> isRuleSatisfied($response -> getRule()) ) {
                 $results[] = $this -> _parseArgs($response -> getMessage(), $args);
             } else {
             }
@@ -105,7 +105,7 @@ class Responder extends Injectable
     protected function _parseArgs( $message, $args )
     {
         preg_match_all('/\$([0-9])/', $message, $matches);
-        foreach( $matches[0] as $index => $param ){
+        foreach ( $matches[0] as $index => $param ) {
             $key   = (int) $matches[1][$index];
             $value = array_key_exists($key, $args)? $args[$key]:'';
             

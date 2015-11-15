@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -111,29 +111,29 @@ class Brain extends \SmartBot\Di\Injectable
     public function isRuleSatisfied( $rule )
     {
         
-        if(true == is_null($rule) ) {
+        if (true == is_null($rule)) {
             return true; 
         }
         
         $test = $rule;
         preg_match_all('/([a-z]+)\(([^\&|\(\)]+)\)/i', $rule, $matches);
         
-        foreach( $matches[1] as $index => $method ){
+        foreach ($matches[1] as $index => $method) {
             $str    = $matches[0][$index];
             $value  = trim($matches[2][$index]);
             
-            switch( strtolower(trim($method)) ){
-            case 'hascontext':
-                $test = str_replace($str, ($this->_smartBot -> hasContext($value))? ' true ':' false ', $test);
-                break;
-                    
-            case 'isknown':
-                $test = str_replace($str, ($this-> _memory -> knows($value))? ' true ':' false ', $test);
-                break;
-                    
-            case 'isnotknown':
-                $test = str_replace($str, (! $this-> _memory -> knows($value))? ' true ':' false ', $test);
-                break;
+            switch (strtolower(trim($method))) {
+                case 'hascontext':
+                    $test = str_replace($str, ($this->_smartBot -> hasContext($value))? ' true ':' false ', $test);
+                    break;
+                        
+                case 'isknown':
+                    $test = str_replace($str, ($this-> _memory -> knows($value))? ' true ':' false ', $test);
+                    break;
+                        
+                case 'isnotknown':
+                    $test = str_replace($str, (! $this-> _memory -> knows($value))? ' true ':' false ', $test);
+                    break;
             }
             
         }
@@ -154,21 +154,21 @@ class Brain extends \SmartBot\Di\Injectable
         $results = array();
         foreach ($this -> _smartBot -> getListeners() as $name => $config ) {
 
-            if(preg_match($config['regex'], $message, $matches) ) {
+            if (preg_match($config['regex'], $message, $matches)) {
                 
-                if($config['responder'] instanceof Responder ) {
+                if ($config['responder'] instanceof Responder ) {
                     $response = $config['responder'] -> handle($message, array_slice($matches, 1)); 
-                }
-                else {
+                } else {
                     $response = $config['responder']($message, array_slice($matches, 1));
                 }
+                
                 switch( gettype($response) ) {
-                case 'string':
-                    $results[] = $response;
-                    break;
-                case 'array':
-                    $results = array_merge($results, $response);
-                    break;
+                    case 'string':
+                        $results[] = $response;
+                        break;
+                    case 'array':
+                        $results = array_merge($results, $response);
+                        break;
                 }
             }
         }

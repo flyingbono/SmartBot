@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -125,7 +125,7 @@ class Bot
         $this -> _dataPath  = realpath($dataPath);
         
         // Test data path
-        if(false == is_dir($this -> _dataPath)) { 
+        if (false == is_dir($this -> _dataPath)) { 
             throw new Exception('SmartBot : data path doesn\'t exists'); 
         }
         
@@ -158,7 +158,7 @@ class Bot
         $this -> _brain -> load();
         
         // Check if there is at least 1 listener
-        if(count($this -> _listeners) == 0 ) {
+        if (count($this -> _listeners) == 0 ) {
             // add a default listener
             $listener = new $this -> _defaultListenerClass($this);
             $listener -> initialize();
@@ -173,26 +173,25 @@ class Bot
      */
     protected function _loadOptions( array $options = array() )
     {
-        foreach( $options as $key => $option ){
-            switch(strtolower($key)){
-                
-            case 'listener':
-                $listener = new $option($this);
-                $listener -> initialize();
-                break;
-                    
-            case 'innate':
-                $items = include $option;
-                $this -> getBrain() -> getMemory() -> addInnateItems($items);
-                break;
-                    
-            case 'context':
-                $this -> addContext($option);
-                break;
-                    
-            case 'caller':
-                $this -> setCaller($option);
-                break;
+        foreach ( $options as $key => $option ) {
+            switch( strtolower($key) ) {
+                case 'listener':
+                    $listener = new $option($this);
+                    $listener -> initialize();
+                    break;
+                        
+                case 'innate':
+                    $items = include $option;
+                    $this -> getBrain() -> getMemory() -> addInnateItems($items);
+                    break;
+                        
+                case 'context':
+                    $this -> addContext($option);
+                    break;
+                        
+                case 'caller':
+                    $this -> setCaller($option);
+                    break;
             }
         }
         
@@ -252,15 +251,15 @@ class Bot
     public function addContext( $name )
     {
         
-        if(is_array($name) ) {
-            foreach( $name as $context ) {
+        if (is_array($name) ) {
+            foreach ( $name as $context ) {
                 $this -> addContext($context); 
             }
             
-                return $this;
+            return $this;
         }
             
-        if($this -> hasContext($name) ) {
+        if ($this -> hasContext($name) ) {
             return $this; 
         }
         
@@ -364,8 +363,8 @@ class Bot
     public function listen( array $regex, $responders )
     {
         
-        if(true == is_array($responders) ) {
-            foreach( $responders as $responder ) {
+        if (true == is_array($responders) ) {
+            foreach ( $responders as $responder ) {
                 $this -> listen($regex, $responder); 
             }
             
@@ -374,7 +373,7 @@ class Bot
           
         $responder = $responders;
         
-        foreach( $regex as $expr ) {
+        foreach ( $regex as $expr ) {
                         
             $this -> _listeners[uniqid()] = array(
                     'regex' => $expr,
@@ -394,7 +393,7 @@ class Bot
      */
     public function responder( $name )
     {
-        if(true == array_key_exists($name, $this -> _responders) ) {
+        if (true == array_key_exists($name, $this -> _responders) ) {
             return $this -> _responders[$name]; 
         }
         
@@ -464,7 +463,7 @@ class Bot
             
         $output = $this ->  getBrain() -> input($input);
 
-        if(false === is_null($callback) && is_callable($callback) ) {
+        if (false === is_null($callback) && is_callable($callback) ) {
             return $callback($input, $output ); 
         }
         

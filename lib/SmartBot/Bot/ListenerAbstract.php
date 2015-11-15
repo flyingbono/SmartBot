@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -70,15 +70,15 @@ abstract class ListenerAbstract
     {
         $responder = $this -> _smartBot -> responder($name);
         
-        if(false == array_key_exists($name, $this -> _responders) ) {
+        if (false == array_key_exists($name, $this -> _responders)) {
             // append config to responder
-            foreach( $this -> _config as $section => $data ){
+            foreach ( $this -> _config as $section => $data ) {
                 
-                if(preg_match(sprintf('/^responder:%s$/i', $name), $section) ) { 
+                if (preg_match(sprintf('/^responder:%s$/i', $name), $section) ) { 
                     $responder -> add($data['msg']); 
                 }
                 
-                if(preg_match(sprintf('/^responder:%s:(.*)$/i', $name), $section, $matches) ) { 
+                if (preg_match(sprintf('/^responder:%s:(.*)$/i', $name), $section, $matches) ) { 
                     $responder -> add($data['msg'], $matches[1]); 
                 }
 
@@ -102,7 +102,7 @@ abstract class ListenerAbstract
 
         $iniFile = __DIR__.'/Listener/Config/'.$name .'.ini';
 
-        if(false == file_exists($iniFile) ) {
+        if (false == file_exists($iniFile) ) {
             throw new Exception(sprintf('Strings INI file not found for listener : %s', get_class($this))); 
         }
         
