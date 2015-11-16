@@ -36,13 +36,6 @@ class Bot
 {
     
     /**
-     * Default listener class (if not sets)
-     * 
-     * @var string
-     */
-    private $_defaultListenerClass = 'SmartBot\Bot\Listener\EnUSListener';
-    
-    /**
      * Dependcy container instance
      * 
      * @var DI\Container
@@ -160,7 +153,7 @@ class Bot
         // Check if there is at least 1 listener
         if (count($this -> _listeners) == 0 ) {
             // add a default listener
-            $listener = new $this -> _defaultListenerClass($this);
+            $listener = new SmartBot\Bot\Listener\EnUSListener($this);
             $listener -> initialize();
         }
     }
