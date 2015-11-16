@@ -1,7 +1,3 @@
-[![Build Status][BS img]][Build Status]
-[![Code Climate][CC img]][Code Climate]
-[![Coverage Status][CS img]][Coverage Status]
-
 # SmartBot
 [![Build Status](https://img.shields.io/travis/flyingbono/SmartBot/master.svg)](https://travis-ci.org/flyingbono/SmartBot)
 [![Code Climate](https://img.shields.io/codeclimate/github/flyingbono/SmartBot.svg)](https://codeclimate.com/github/flyingbono/SmartBot)
