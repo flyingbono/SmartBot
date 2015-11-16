@@ -1,11 +1,9 @@
 # SmartBot
-
-Multilinguage bot responder implemented in PHP, with learning capabilities
-
-
 [![Build Status](https://travis-ci.org/flyingbono/SmartBot.svg)](https://travis-ci.org/flyingbono/SmartBot)
 [![Code Climate](https://codeclimate.com/github/flyingbono/SmartBot/badges/gpa.svg)](https://codeclimate.com/github/flyingbono/SmartBot)
 [![Test Coverage](https://codeclimate.com/github/flyingbono/SmartBot/badges/coverage.svg)](https://codeclimate.com/github/flyingbono/SmartBot/coverage)
+
+Multilinguage bot responder implemented in PHP, with learning capabilities
 
 ### Installation :
 ``` sh
