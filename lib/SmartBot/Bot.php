@@ -69,7 +69,6 @@ class Bot
      * @var string
      */
     protected $_caller = null;
-    
 
     /**
      * Registred listeners dirs
