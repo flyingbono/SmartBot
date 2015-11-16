@@ -1,0 +1,15 @@
+engines:
+  fixme:
+    enabled: true
+  phpcodesniffer:
+    enabled: true
+    config:
+      file_extensions: "php"
+      standard: "Zend"
+  phpmd:
+    enabled: true
+languages:
+  PHP: true
+ratings:
+  paths:
+  - "lib/SmartBot/**.php"
