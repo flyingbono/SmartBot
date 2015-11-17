@@ -38,7 +38,7 @@ class Utils
     }
     
     
-    public static function validateExpression($expression, $l = 1) 
+    public static function validateExpression($exp, $l = 1) 
     {
         $exp = trim(strtolower($exp));
         $exp = str_replace(' ', '', $exp);
