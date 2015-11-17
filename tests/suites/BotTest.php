@@ -66,9 +66,9 @@ class BotTest extends \PHPUnit_Framework_TestCase
     {
         $bot = new \SmartBot\Bot( __DIR__.'/../data/' );
     
-        $output = $bot -> talk('__test__', null, $_callback );
+        $output = $bot -> talk('__test__' );
         
-        var_dump($output);
+        $this -> assertEquals('Who is talking to me ??', $output );
     }
     
     /**
