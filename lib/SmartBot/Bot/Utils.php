@@ -37,7 +37,14 @@ class Utils
         return strtr(ucwords(strtr($value, array('_' => ' ','-' => ' ', '.' => '_ ', '\\' => '_ '))), array(' ' => ''));
     }
     
-    
+    /**
+     * Validate an expression like true&&(false|true) and return the boolean result
+     * 
+     * @param string $exp
+     * @param number $l
+     * @throws \Exception
+     * @return boolean
+     */
     public static function validateExpression($exp, $l = 1) 
     {
         $exp = trim(strtolower($exp));
