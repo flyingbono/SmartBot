@@ -60,6 +60,18 @@ class BotTest extends \PHPUnit_Framework_TestCase
     }
     
     /**
+     * Test no-caller instanciation
+     */
+    public function testBotInstanciateNoCaller()
+    {
+        $bot = new \SmartBot\Bot( __DIR__.'/../data/' );
+    
+        $output = $bot -> talk('__test__', null, $_callback );
+        
+        var_dump($output);
+    }
+    
+    /**
      * Test no-option instanciation
      */
     public function testBotInstanciateNoOption()
