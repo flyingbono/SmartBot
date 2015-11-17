@@ -125,7 +125,7 @@ class Brain extends \SmartBot\Di\Injectable
             switch (strtolower(trim($method))) {
                 case 'hascontext':
                     $value      = ($this->_smartBot -> hasContext($value))? ' true ':' false ';
-                    $conditions = str_replace($str, $value, $conditions);$value
+                    $conditions = str_replace($str, $value, $conditions);
                     break;
                         
                 case 'isknown':
