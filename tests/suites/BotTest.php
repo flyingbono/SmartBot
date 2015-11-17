@@ -45,6 +45,10 @@ class BotTest extends \PHPUnit_Framework_TestCase
         $response = $bot -> getBrain() -> getMemory() -> searchSomeone('Bruno VIBERT');
         $this -> assertInstanceOf('SmartBot\Bot\Brain\Memory\Item', $response );
         
+        // Test talk
+        $output = $bot -> talk('__test__');
+        $this -> assertEquals( 'Succeed!', $output );
+        
     }
     
     /**
