@@ -1,14 +1,12 @@
 <?php
 namespace SmartBot\Tests;
 
-
 /**
  * Bot test
  *
  */
 class BotTest extends \PHPUnit_Framework_TestCase
 {
-    
     
     /**
      * Test standard instanciation
@@ -56,6 +54,8 @@ class BotTest extends \PHPUnit_Framework_TestCase
         
         $output = $bot -> talk('__test__', null, $_callback );
         $this -> assertEquals( '*Succeed!', $output );
+        
+        $output = $bot -> talk('Hello');
         
     }
     

@@ -32,8 +32,64 @@ class Utils
      * @param  string $value
      * @return string
      */
-    public static function camelize($value)
-    {
+    public static function camelize($value) {
         return strtr(ucwords(strtr($value, array('_' => ' ','-' => ' ', '.' => '_ ', '\\' => '_ '))), array(' ' => ''));
     }
+    
+    
+    public static function validateExpression($expression, $l = 1) {
+        $expression = trim(strtolower($expression));
+        $expression = str_replace(' ', '', $expression );
+        $expression = str_replace(' ', '', $expression );
+        
+//         echo sprintf('%s Evaluate expression : %s', str_repeat('>',$l), $expression).PHP_EOL;
+        
+        preg_match_all('/\(([^\)]+)\)/ui', $expression, $matches );
+        foreach($matches[1] as $index => $subExpression ) {
+            $expression = str_replace($matches[0][$index], self::validateExpression($subExpression, $l+1)? 'true':'false', $expression);
+        }
+        
+        $map = array(
+            'true&&true'    => (bool) (true && true),
+            'true&&false'   => (bool) (true && false),
+            'false&&true'   => (bool) (false && true),
+            'false&&false'  => (bool) (false && false),
+            'true&true'     => (bool) (true & true),
+            'true&false'    => (bool) (true & false),
+            'false&true'    => (bool) (false & true),
+            'false&false'   => (bool) (false & false),
+            'true||true'    => (bool) (true || true),
+            'true||false'   => (bool) (true || false),
+            'false||true'   => (bool) (false || true),
+            'false||false'  => (bool) (false || false),
+            'true|true'     => (bool) (true | true),
+            'true|false'    => (bool) (true | false),
+            'false|true'    => (bool) (false | true),
+            'false|false'   => (bool) (false | false),
+        );
+        
+        if ( true === array_key_exists($expression, $map ) ) {
+           $expression = str_replace($expression, ($map[$expression])? 'true':'false', $expression); 
+           
+        } else {
+            while( preg_match('/(true|false)([&\|]{1,2})(true|false)/', $expression, $matches ) ) {
+               
+                if( true == array_key_exists($matches[0], $map ) ) {
+                    $value = $map[$matches[0]]? 'true':'false';
+//                     echo sprintf('%s Replacing "%s" by "%s" in %s', str_repeat('>',$l+1), $matches[0], $value, $expression).PHP_EOL;
+                    $expression = str_replace($matches[0], $value, $expression );
+                
+                } else {
+                    throw new \Exception(sprintf('Cannot found a valid boolean result for expression "%s" in "%s"', 
+                                    $matches[0], $expression ) );
+                }
+
+            }
+        }
+        
+//         echo sprintf('%s %s', str_repeat('<',$l), $expression).PHP_EOL;
+        
+        return ($expression === 'true');
+    }
+    
 }

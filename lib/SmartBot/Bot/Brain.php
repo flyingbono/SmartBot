@@ -115,7 +115,7 @@ class Brain extends \SmartBot\Di\Injectable
             return true; 
         }
         
-        $test = $rule;
+        $conditions = trim($rule);
         preg_match_all('/([a-z]+)\(([^\&|\(\)]+)\)/i', $rule, $matches);
         
         foreach ($matches[1] as $index => $method) {
@@ -124,21 +124,22 @@ class Brain extends \SmartBot\Di\Injectable
             
             switch (strtolower(trim($method))) {
                 case 'hascontext':
-                    $test = str_replace($str, ($this->_smartBot -> hasContext($value))? ' true ':' false ', $test);
+                    $conditions = str_replace($str, ($this->_smartBot -> hasContext($value))? ' true ':' false ', $conditions);
                     break;
                         
                 case 'isknown':
-                    $test = str_replace($str, ($this-> _memory -> knows($value))? ' true ':' false ', $test);
+                    $conditions = str_replace($str, ($this-> _memory -> knows($value))? ' true ':' false ', $conditions);
                     break;
                         
                 case 'isnotknown':
-                    $test = str_replace($str, (! $this-> _memory -> knows($value))? ' true ':' false ', $test);
+                    $conditions = str_replace($str, (! $this-> _memory -> knows($value))? ' true ':' false ', $conditions);
                     break;
             }
             
         }
-        
-        eval(sprintf('$result = (bool) (%s);', $test));
+
+        $result = Utils::validateExpression($conditions);
+
         return $result;
     }
 
