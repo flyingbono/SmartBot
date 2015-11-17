@@ -40,6 +40,7 @@ class EnUSListener extends ListenerAbstract implements ListenerInterface
         $ai = $this ->_smartBot;
                 
         // Create listeners and associate to responders
+        $ai -> listen(['/__test__/i'], $this->responder('__test__'));
         $ai -> listen(['/(hello| hi |good morning)/i'], $this->responder('hello'));
         $ai -> listen(['/what time is it/i'], $this->responder('time'));
         $ai -> listen(['/my ([a-z]+) is ([a-z]+)/i'], [$this->responder('acquire'),$this->responder('acquired')]);
