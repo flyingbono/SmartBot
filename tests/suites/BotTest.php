@@ -49,6 +49,14 @@ class BotTest extends \PHPUnit_Framework_TestCase
         $output = $bot -> talk('__test__');
         $this -> assertEquals( 'Succeed!', $output );
         
+        // Test talk callback
+        $_callback  = function($input, $output) {
+            return '*'.$output;
+        };
+        
+        $output = $bot -> talk('__test__', null, $_callback );
+        $this -> assertEquals( '*Succeed!', $output );
+        
     }
     
     /**
