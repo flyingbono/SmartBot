@@ -21,7 +21,7 @@ class BotTest extends \PHPUnit_Framework_TestCase
                 'listener'  => 'SmartBot\Bot\Listener\EnUSListener',
                 'innate'    => __DIR__.'/../data/smart-bot-memory-innate.php',
                 'caller'    => $callerId,
-                'context'   => ['Foo:Bar']
+                'context'   => ['Foo:Bar','Foo:Bar','Foo:Baz']
         );
         
         $bot = new \SmartBot\Bot( __DIR__.'/../data/', $options );
@@ -29,7 +29,7 @@ class BotTest extends \PHPUnit_Framework_TestCase
         $this -> assertInstanceOf('\SmartBot\Bot', $bot );
         $this -> assertEquals( $bot -> getCaller(), 123 );
         $this -> assertEquals( $bot -> hasContext('Foo:Bar'), true );
-        $this -> assertEquals( $bot -> hasContext('Foo:Baz'), false );
+        $this -> assertEquals( $bot -> hasContext('Foo:Boz'), false );
         
         // Learning capabilities
         $bot -> learn('Caller:birdthdate',  '1975-06-30');
@@ -41,6 +41,9 @@ class BotTest extends \PHPUnit_Framework_TestCase
         $this -> assertInternalType('array', $response);
         $this -> assertCount(1, $response);
         $this -> assertInstanceOf('SmartBot\Bot\Brain\Memory\Item', $response[0] );
+        
+        $response = $bot -> getBrain() -> getMemory() -> searchSomeone('Bruno VIBERT');
+        $this -> assertInstanceOf('SmartBot\Bot\Brain\Memory\Item', $response );
         
     }
     
