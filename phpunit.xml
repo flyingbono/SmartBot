@@ -4,7 +4,8 @@
 	bootstrap="tests/_bootstrap.php" backupGlobals="false" verbose="true">
 	<testsuites>
 		<testsuite name="SmartBot">
-			<directory suffix="Test.php" phpVersion="5.5.13" phpVersionOperator=">=">tests/suites/</directory>
+			<directory>tests/suites/</directory>
+			<!-- <directory suffix="Test.php" phpVersion="5.5.13" phpVersionOperator=">=">tests/suites/</directory> -->
 			<!-- <file>tests/suites/UtilsTest.php</file> -->
 		</testsuite>
 	</testsuites>
