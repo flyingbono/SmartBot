@@ -152,7 +152,7 @@ class Bot
         // Check if there is at least 1 listener
         if (count($this -> _listeners) == 0 ) {
             // add a default listener
-            $listener = new SmartBot\Bot\Listener\EnUSListener($this);
+            $listener = new Bot\Listener\EnUSListener($this);
             $listener -> initialize();
         }
     }
