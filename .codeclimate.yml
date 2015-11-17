@@ -11,8 +11,6 @@ engines:
     config:
       file_extensions: "php"
       rulesets: "unusedcode,cleancode,design,codesize"
-languages:
-  PHP: true
 ratings:
   paths:
   - "lib/SmartBot/**.php"
