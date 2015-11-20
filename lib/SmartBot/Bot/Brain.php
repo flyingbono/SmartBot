@@ -156,7 +156,7 @@ class Brain extends \SmartBot\Di\Injectable
         $output = new Output;
                 
         $results = array();
-        foreach ($this -> _smartBot -> getListeners() as $name => $config ) {
+        foreach ($this -> _smartBot -> getListeners() as $config ) {
 
             if (preg_match($config['regex'], $message, $matches)) {
                 

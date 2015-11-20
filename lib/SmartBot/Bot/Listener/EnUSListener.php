@@ -66,7 +66,7 @@ class EnUSListener extends ListenerAbstract implements ListenerInterface
         if ($recipient instanceof Item) {
             // recipent found. maybe confirm ??
             $recipientId     = $ai -> getCallerId($recipient -> address);
-            $recipientName   = $ai -> getCallerProperty($recipientId, 'name');
+            // $recipientName   = $ai -> getCallerProperty($recipientId, 'name');
             
             return $this -> responder('whois-friend') -> handle($message, $args);
             
