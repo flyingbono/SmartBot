@@ -4,7 +4,6 @@
 [![Test Coverage](https://codeclimate.com/github/flyingbono/SmartBot/badges/coverage.svg?@SHA)](https://codeclimate.com/github/flyingbono/SmartBot/coverage)
 [![Issue Count](https://codeclimate.com/github/flyingbono/SmartBot/badges/issue_count.svg?@SHA)](https://codeclimate.com/github/flyingbono/SmartBot)
 [![Translations](https://img.shields.io/badge/translations-1-red.svg?@SHA)](https://github.com/flyingbono/SmartBot/tree/master/lib/SmartBot/Bot/Listener)
-|
 
 
 Multilinguage bot responder implemented in PHP, with learning capabilities
