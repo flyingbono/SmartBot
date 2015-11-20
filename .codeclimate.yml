@@ -10,7 +10,7 @@ engines:
     enabled: true
     config:
       file_extensions: "php"
-      rulesets: "unusedcode,cleancode,design,codesize",
+      rulesets: "unusedcode,cleancode,design,codesize"
       exclude: "tests/*,vendor/*"
 ratings:
   paths:
