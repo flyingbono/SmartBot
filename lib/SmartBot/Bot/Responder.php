@@ -84,11 +84,11 @@ class Responder extends Injectable
      */
     public function handle( $message, $args = array() )
     {
+        $message = trim($message); // faked phpmd ;)
         $results = array();
         foreach ( $this -> _responses as $response ) {
             if ($this -> getDi() -> get('Brain') -> isRuleSatisfied($response -> getRule()) ) {
                 $results[] = $this -> _parseArgs($response -> getMessage(), $args);
-            } else {
             }
         }
         
