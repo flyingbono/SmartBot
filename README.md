@@ -1,13 +1,11 @@
 # SmartBot
-[![Build Status](https://img.shields.io/travis/flyingbono/SmartBot/master.svg)](https://travis-ci.org/flyingbono/SmartBot)
-[![Code Climate](https://img.shields.io/codeclimate/github/flyingbono/SmartBot.svg)](https://codeclimate.com/github/flyingbono/SmartBot)
-
-[![Test Coverage](https://img.shields.io/codeclimate/coverage/github/flyingbono/SmartBot.svg)](https://codeclimate.com/github/flyingbono/SmartBot/coverage)
-[![Translations](https://img.shields.io/badge/translations-1-red.svg)](https://github.com/flyingbono/SmartBot/tree/master/lib/SmartBot/Bot/Listener)
-|
+[![Build Status](https://img.shields.io/travis/flyingbono/SmartBot/master.svg?@SHA)](https://travis-ci.org/flyingbono/SmartBot)
 [![Code Climate](https://codeclimate.com/github/flyingbono/SmartBot/badges/gpa.svg?@SHA)](https://codeclimate.com/github/flyingbono/SmartBot)
 [![Test Coverage](https://codeclimate.com/github/flyingbono/SmartBot/badges/coverage.svg?@SHA)](https://codeclimate.com/github/flyingbono/SmartBot/coverage)
 [![Issue Count](https://codeclimate.com/github/flyingbono/SmartBot/badges/issue_count.svg?@SHA)](https://codeclimate.com/github/flyingbono/SmartBot)
+[![Translations](https://img.shields.io/badge/translations-1-red.svg?@SHA)](https://github.com/flyingbono/SmartBot/tree/master/lib/SmartBot/Bot/Listener)
+|
+
 
 Multilinguage bot responder implemented in PHP, with learning capabilities
 
