@@ -29,31 +29,31 @@ abstract class ListenerAbstract
 {
     /**
      * The SmartBot instance
-     * 
+     *
      * @var \SmartBot\Bot
      */
     protected $_smartBot;
     
     /**
      * Listener configuration (loaded from INI file)
-     * 
+     *
      * @var array
      */
     protected $_config = array();
     
     /**
      * Listener's responders
-     * 
+     *
      * @var array
      */
     protected $_responders = array();
     
     /**
      * Class constructor
-     * 
+     *
      * @param \SmartBot\Bot $smartBot
      */
-    final public function __construct( \SmartBot\Bot $smartBot )
+    final public function __construct(\SmartBot\Bot $smartBot)
     {
         $this -> _smartBot = $smartBot;
         
@@ -62,7 +62,7 @@ abstract class ListenerAbstract
     
     /**
      * Get the responder singleton instance and load listen strings
-     * 
+     *
      * @param  string $name
      * @return \SmartBot\Bot\Responder
      */
@@ -72,14 +72,13 @@ abstract class ListenerAbstract
         
         if (false == array_key_exists($name, $this -> _responders)) {
             // append config to responder
-            foreach ( $this -> _config as $section => $data ) {
-                
-                if (preg_match(sprintf('/^responder:%s$/i', $name), $section) ) { 
-                    $responder -> add($data['msg']); 
+            foreach ($this -> _config as $section => $data) {
+                if (preg_match(sprintf('/^responder:%s$/i', $name), $section)) {
+                    $responder -> add($data['msg']);
                 }
                 
-                if (preg_match(sprintf('/^responder:%s:(.*)$/i', $name), $section, $matches) ) { 
-                    $responder -> add($data['msg'], $matches[1]); 
+                if (preg_match(sprintf('/^responder:%s:(.*)$/i', $name), $section, $matches)) {
+                    $responder -> add($data['msg'], $matches[1]);
                 }
 
             }
@@ -92,10 +91,10 @@ abstract class ListenerAbstract
     
     /**
      * Find and return the listener config file
-     * 
+     *
      * @return string
      */
-    public function getConfigFile() 
+    public function getConfigFile()
     {
         
         $ref    = new \ReflectionClass(get_class($this));
@@ -109,7 +108,7 @@ abstract class ListenerAbstract
     
     /**
      * Load internal listen string stored in the INI file
-     * 
+     *
      * @throws Exception
      * @return \SmartBot\Bot\Responder
      */
@@ -117,8 +116,8 @@ abstract class ListenerAbstract
     {
         $iniFile = $this -> getConfigFile();
 
-        if (false == file_exists($iniFile) ) {
-            throw new Exception(sprintf('Config file not found for listener : %s', get_class($this))); 
+        if (false == file_exists($iniFile)) {
+            throw new Exception(sprintf('Config file not found for listener : %s', get_class($this)));
         }
         
             

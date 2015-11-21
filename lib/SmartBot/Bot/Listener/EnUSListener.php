@@ -30,7 +30,7 @@ class EnUSListener extends ListenerAbstract implements ListenerInterface
 {
     
     /**
-     * 
+     *
      * {@inheritDoc}
      * @see \SmartBot\Bot\ListenerInterface::initialize()
      */
@@ -47,12 +47,12 @@ class EnUSListener extends ListenerAbstract implements ListenerInterface
         $bot -> listen(['/(what).+(your|ur).+(name).+\?/i'], $this->responder('whoami'));
         $bot -> listen(['/(who).+(are|r|is).+(you|u).+\?/i'], $this->responder('whoami'));
         $bot -> listen(
-            ['/(wher).+(are|r).+(you|u).+\?/i', '/(wher).+(you|u).+(leave|come from).+\?/i'],      
-            $this->responder('whereami') 
+            ['/(wher).+(are|r).+(you|u).+\?/i', '/(wher).+(you|u).+(leave|come from).+\?/i'],
+            $this->responder('whereami')
         );
         
         $bot -> listen(
-            ['/who is ([a-z ]+) ?/i','/what is ([a-z ]+)/i'],      
+            ['/who is ([a-z ]+) ?/i','/what is ([a-z ]+)/i'],
             function ($message, $args) {
                     return $this -> whois($message, $args);
             }
@@ -61,7 +61,7 @@ class EnUSListener extends ListenerAbstract implements ListenerInterface
         return $this;
     }
     
-    function whois( $message, $args)
+    public function whois($message, $args)
     {
         $recipient  = $this -> _smartBot -> findEntity($args[0]);
         
@@ -69,11 +69,10 @@ class EnUSListener extends ListenerAbstract implements ListenerInterface
             // recipent found. maybe confirm ??
             return $this -> responder('whois-friend') -> handle($message, $args);
             
-        } else if (is_array($recipient) && count($recipient) > 1) {
+        } elseif (is_array($recipient) && count($recipient) > 1) {
             return $this -> responder('whois-many') -> handle($message, $args);
             
-        } else if (is_array($recipient) && count($recipient) == 0 ) {
-             
+        } elseif (is_array($recipient) && count($recipient) == 0) {
             // find the first one on internet ??
             $url = 'https://en.wikipedia.org/w/api.php?format=json&action=query&'.
                     'prop=extracts&exintro=&explaintext=&redirects&titles='.urlencode($args[0]);
@@ -82,32 +81,27 @@ class EnUSListener extends ListenerAbstract implements ListenerInterface
         
             $what = $args[0];
             if (true == isset($response -> query -> redirects)) {
-                $what = urlencode(str_replace(' ', '_', $response -> query -> redirects[0] -> to)); 
+                $what = urlencode(str_replace(' ', '_', $response -> query -> redirects[0] -> to));
             }
             
-            foreach ( get_object_vars($response->query->pages) as $page ) {
-                 
-                if (false == isset($page -> extract) ) {
-                    return $this -> responder('noresponse') -> handle($message); 
+            foreach (get_object_vars($response->query->pages) as $page) {
+                if (false == isset($page -> extract)) {
+                    return $this -> responder('noresponse') -> handle($message);
                 }
                     
                 $phrases    = explode('.', $page -> extract);
                 $lines      = explode(PHP_EOL, $phrases[0]);
                  
-                if (count($lines) > 3 )
-                    $lines = array_slice($lines, 0, 3); 
+                if (count($lines) > 3) {
+                    $lines = array_slice($lines, 0, 3);
+                }
                 
                 $params = array(join(' ', $lines), 'https://en.wikipedia.org/wiki/'.$what );
-                return $this -> responder('whois-wiki') -> handle($message, $params);            
+                return $this -> responder('whois-wiki') -> handle($message, $params);
             }
         
         }
          
         return [];
     }
-    
-    
-    
-    
-    
 }

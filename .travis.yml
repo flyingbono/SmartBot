@@ -13,10 +13,10 @@ script:
   - composer self-update
   - composer install
   - phpunit -d date.timezone=Europe/Paris --configuration ./phpunit.xml
-#  - php ./vendor/bin/phpcs -np --standard=Zend ./lib/SmartBot/ > phpcs.log
+#  - php ./vendor/bin/phpcs -np --standard=PSR2 ./lib/SmartBot/ > phpcs.log
 #  - php ./vendor/bin/phpmd lib/SmartBot text unusedcode,cleancode,design,codesize > phpmd.log
-
-  - php ./vendor/bin/phpcs --report-summary -np --standard=Zend ./lib/SmartBot/
+#  - php ./vendor/bin/phpcbf --standard=PSR2 ./lib/SmartBot/
+  - php ./vendor/bin/phpcs --report-summary -np --standard=PSR2 ./lib/SmartBot/
 
 after_script:
   - vendor/bin/test-reporter 

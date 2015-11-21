@@ -27,24 +27,24 @@ class Output
 {
     /**
      * Output possible results
-     * 
+     *
      * @var array
      */
     private $_results = [];
     
     /**
      * Set possible results
-     * 
+     *
      * @param array $results
      */
-    public function setResults( array $results = array() ) 
+    public function setResults(array $results = array())
     {
         $this -> _results = $results;
     }
     
     /**
      * Get one of the results (randomized)
-     * 
+     *
      * @return string
      */
     public function getResult()
@@ -62,13 +62,11 @@ class Output
     
     /**
      * Alias / convenient method for getResult
-     * 
+     *
      * @return string
      */
-    public function __toString() 
+    public function __toString()
     {
         return $this -> getResult();
     }
-    
-    
 }

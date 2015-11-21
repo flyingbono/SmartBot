@@ -28,25 +28,25 @@ class Response
     
     /**
      * The rules to check
-     * 
+     *
      * @var string
      */
     protected $_rule = null;
     
     /**
      * The response
-     * 
+     *
      * @var string
      */
     protected $_message;
     
     /**
      * Class constructor
-     * 
+     *
      * @param string $message
      * @param string $rule
      */
-    public function __construct( $message, $rule = null )
+    public function __construct($message, $rule = null)
     {
         $this -> _rule     = $rule;
         $this -> _message  = $message;
@@ -55,7 +55,7 @@ class Response
     
     /**
      * Get the response rule
-     * 
+     *
      * @return string
      */
     public function getRule()
@@ -65,7 +65,7 @@ class Response
     
     /**
      * Get the response message
-     * 
+     *
      * @return string
      */
     public function getMessage()

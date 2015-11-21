@@ -32,7 +32,7 @@ class Brain extends \SmartBot\Di\Injectable
     
     /**
      * Bot instance
-     * 
+     *
      * @Inject("Bot")
      * @var           \SmartBot\Bot
      */
@@ -40,7 +40,7 @@ class Brain extends \SmartBot\Di\Injectable
     
     /**
      * My own memory
-     * 
+     *
      * @var \SmartBot\Bot\Brain\Memory
      */
     protected $_memory;
@@ -56,7 +56,7 @@ class Brain extends \SmartBot\Di\Injectable
     
     /**
      * Brain initialisation
-     * 
+     *
      * @return \SmartBot\Bot\Brain Provide a fluent interface
      */
     public function initialize()
@@ -64,12 +64,12 @@ class Brain extends \SmartBot\Di\Injectable
         
         $this -> _memory = $this -> _di -> get('Brain\Memory');
 
-        return $this;          
+        return $this;
     }
     
     /**
      * Loads brain memory acquired data
-     * 
+     *
      * @return \SmartBot\Bot\Brain Provide a fluent interface
      */
     public function load()
@@ -85,7 +85,7 @@ class Brain extends \SmartBot\Di\Injectable
     
     /**
      * Get my memory instance
-     * 
+     *
      * @return \SmartBot\Bot\Brain\Memory
      */
     public function getMemory()
@@ -95,24 +95,24 @@ class Brain extends \SmartBot\Di\Injectable
     
     /**
      * Learn something
-     * 
+     *
      * @param  string $what  Item address of what to learn
      * @param  string $value Item value
      * @param  string $range Item date-range accessibility
      * @return \SmartBot\Bot\Brain Provide a fluent interface
      */
-    public function learn( $what, $value, $range = Memory::RANGE_LONG ) 
+    public function learn($what, $value, $range = Memory::RANGE_LONG)
     {
         $this -> _memory -> acquire($what, $value, $range);
         
         return $this;
     }
     
-    public function isRuleSatisfied( $rule )
+    public function isRuleSatisfied($rule)
     {
         
         if (true == is_null($rule)) {
-            return true; 
+            return true;
         }
         
         $conditions = trim($rule);
@@ -148,25 +148,23 @@ class Brain extends \SmartBot\Di\Injectable
 
     /**
      * Send something to the brain
-     * 
+     *
      * @return string
      */
-    public function input( $message )
+    public function input($message)
     {
         $output = new Output;
                 
         $results = array();
-        foreach ($this -> _smartBot -> getListeners() as $config ) {
-
+        foreach ($this -> _smartBot -> getListeners() as $config) {
             if (preg_match($config['regex'], $message, $matches)) {
-                
-                if ($config['responder'] instanceof Responder ) {
-                    $response = $config['responder'] -> handle($message, array_slice($matches, 1)); 
+                if ($config['responder'] instanceof Responder) {
+                    $response = $config['responder'] -> handle($message, array_slice($matches, 1));
                 } else {
                     $response = $config['responder']($message, array_slice($matches, 1));
                 }
                 
-                switch( gettype($response) ) {
+                switch (gettype($response)) {
                     case 'string':
                         $results[] = $response;
                         break;
@@ -190,17 +188,13 @@ class Brain extends \SmartBot\Di\Injectable
    
     /**
      * Flush brain acquired memory
-     * 
+     *
      * @return \SmartBot\Bot\Brain Provide a fluent interface
      */
-    public function flush() 
+    public function flush()
     {
         
         $this -> _memory -> flush();
         return $this;
     }
-    
-    
-    
-    
 }

@@ -46,10 +46,10 @@ class Conversation extends Injectable
     
     /**
      * Flush the actual conversation and load a new one
-     * 
+     *
      * @return \SmartBot\Bot\Brain\Memory Provide a fluent interface
      */
-    public function load( $entity ) 
+    public function load($entity)
     {
         $this -> flush();
         
@@ -61,7 +61,6 @@ class Conversation extends Injectable
         if (file_exists($this -> _memoryFile)) {
             echo $this -> _memoryFile;
             foreach (include $this -> _memoryFile as $item) {
-
                 $this -> _addItem($item);
             }
         }
@@ -74,7 +73,7 @@ class Conversation extends Injectable
      *
      * @param \SmartBot\Bot\Conversation\Item $item
      */
-    private function _addItem( Item $item )
+    private function _addItem(Item $item)
     {
         $this -> _items[] = $item;
     }
@@ -93,8 +92,6 @@ class Conversation extends Injectable
         $data .= 'return ['.PHP_EOL;
     
         foreach ($this -> _items as $item) {
-    
-    
             $data .= sprintf(
                 "SmartBot\Bot\Conversation\Item::factory(array(
     'context'   => '%s',
@@ -116,7 +113,7 @@ class Conversation extends Injectable
      */
     public function flush()
     {
-        if (true === file_exists($this -> _memoryFile) && false === is_writable($this -> _memoryFile) ) {
+        if (true === file_exists($this -> _memoryFile) && false === is_writable($this -> _memoryFile)) {
             throw new Exception('Conversation memory file is not writable');
         }
         
@@ -131,10 +128,4 @@ class Conversation extends Injectable
 
         return $this;
     }
-    
-    
-    
-    
-    
-    
 }

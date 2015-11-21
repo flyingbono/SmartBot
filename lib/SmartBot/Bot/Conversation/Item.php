@@ -33,7 +33,7 @@ class Item
     
     /**
      * The item context
-     * 
+     *
      * @var string
      */
     public $context;
@@ -42,7 +42,7 @@ class Item
     
     /**
      * Memory item factory
-     * 
+     *
      * @param array $data
      * @return \SmartBot\Bot\Conversation\Item
      */
@@ -61,5 +61,4 @@ class Item
         
         return $item;
     }
-    
 }

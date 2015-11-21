@@ -32,42 +32,42 @@ class Item
     
     /**
      * The item address
-     * 
+     *
      * @var string
      */
     public $address;
     
     /**
      * The item acquisition date
-     * 
+     *
      * @var string|Datetime
      */
     public $acquired;
     
     /**
      * The item value
-     * 
+     *
      * @var string|Datetime
      */
-    public $value;  
+    public $value;
     
     /**
      * The item memory range
-     * 
+     *
      * @var string
      */
     public $range;
     
     /**
      * The item memory storage type
-     * 
+     *
      * @var string
      */
     public $type = Memory::TYPE_NONE;
     
     /**
      * Check if the current item is a Entity item
-     * 
+     *
      * @return boolean
      */
     public function isEntity()
@@ -77,7 +77,7 @@ class Item
     
     /**
      * Memory item factory
-     * 
+     *
      * @param array $data
      * @return \SmartBot\Bot\Brain\Memory\Item
      */
@@ -86,8 +86,8 @@ class Item
         $item = new self;
         foreach ($data as $key => $value) {
             if (property_exists($item, $key)) {
-                if (preg_match(self::DATE_REGEX, $value) ) {
-                    $value = new \DateTime($value); 
+                if (preg_match(self::DATE_REGEX, $value)) {
+                    $value = new \DateTime($value);
                 }
                 
                 $item -> $key = $value;
@@ -104,7 +104,7 @@ class Item
     public function getValue()
     {
         if ($this -> value instanceof \DateTime) {
-            return $this -> value -> format('d/m/Y'); 
+            return $this -> value -> format('d/m/Y');
         }
         
         return $this -> value;
