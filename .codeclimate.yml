@@ -19,3 +19,5 @@ exclude_paths:
   - "vendor/**"
   - "*.yml"
   - "*.md"
+exclude_fingerprints:
+    - 3705c63ad8629a781bc897c07a9ee7c2
