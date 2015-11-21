@@ -41,70 +41,70 @@ class Bot
      *
      * @var DI\Container
      */
-    private $_di;
+    private $di;
     
     /**
      * Bot brain instance
      *
      * @var Brain
      */
-    protected $_brain;
+    protected $brain;
     
     /**
      * Bot storage
      *
      * @var string
      */
-    protected $_dataPath;
+    protected $dataPath;
     
     /**
      * Contexts strings
      *
      * @var array
      */
-    protected $_contexts = [];
+    protected $contexts = [];
     
     /**
      * Bot's entity (who speak with me)
      *
      * @var string
      */
-    protected $_entity = null;
+    protected $entity = null;
     
     /**
      * Bot's entity conversation context (who speak with me)
      *
      * @var Conversation
      */
-    protected $_conversation = null;
+    protected $conversation = null;
 
     /**
      * Registred listeners dirs
      *
      * @var array
      */
-    protected $_listenersDirs = [];
+    protected $listenersDirs = [];
     
     /**
      * Registred listeners instances
      *
      * @var array
      */
-    protected $_listenerInstances = [];
+    protected $listenerInstances = [];
     
     /**
      * Registred listeners map
      *
      * @var array
      */
-    protected $_listeners = [];
+    protected $listeners = [];
     
     /**
      * Responders
      *
      * @var array
      */
-    protected $_responders = [];
+    protected $responders = [];
     
     /**
      * Bot Class constructor
@@ -121,46 +121,46 @@ class Bot
         $builder -> useAnnotations(true);
         $builder -> addDefinitions(__DIR__.'/Di/Config.php');
         
-        $this -> _di    = $builder->build();
-        $this -> _dataPath  = $dataPath;
+        $this -> di    = $builder->build();
+        $this -> dataPath  = $dataPath;
         
         // Test data path
-        if (false == is_dir($this -> _dataPath)) {
-            throw new Exception(sprintf('SmartBot : data path "%s" doesn\'t exists', $this -> _dataPath));
+        if (false == is_dir($this -> dataPath)) {
+            throw new Exception(sprintf('SmartBot : data path "%s" doesn\'t exists', $this -> dataPath));
         }
         
-        $test = $this -> _dataPath.'/'.uniqid();
+        $test = $this -> dataPath.'/'.uniqid();
         @file_put_contents($test, 'SmartBot test');
         if (false == file_exists($test)) {
-            throw new Exception(sprintf('SmartBot : data path "%s" is not writtable', $this -> _dataPath));
+            throw new Exception(sprintf('SmartBot : data path "%s" is not writtable', $this -> dataPath));
         }
         
         @unlink($test);
               
         // Register objects in DI
-        $this -> _di -> set('Bot', $this);
-        $this -> _di -> set('DI', $this -> _di);
-        $this -> _brain = $this -> _di -> get('Brain');
+        $this -> di -> set('Bot', $this);
+        $this -> di -> set('DI', $this -> di);
+        $this -> brain = $this -> di -> get('Brain');
         
         // Create the acquire responder
-        $this -> _responders['acquire'] = $this -> _di -> get('Responder\Acquire');
+        $this -> responders['acquire'] = $this -> di -> get('Responder\Acquire');
         
-        $this -> _conversation = $this -> _di -> make('Conversation');
+        $this -> conversation = $this -> di -> make('Conversation');
         
         // Add the  main listener
 //         $this -> addListenerDir(__DIR__.'/Bot/Listener');
         
         // Initialize the brain
-        $this -> _brain -> initialize();
+        $this -> brain -> initialize();
         
         // Load options
-        $this -> _loadOptions($options);
+        $this -> loadOptions($options);
         
         // Load acquired memory
-        $this -> _brain -> load();
+        $this -> brain -> load();
         
         // Check if there is at least 1 listener
-        if (count($this -> _listeners) == 0) {
+        if (count($this -> listeners) == 0) {
             // Add the default EnUS listener
             $this -> addListener('\SmartBot\Bot\Listener\EnUSListener');
             
@@ -176,7 +176,7 @@ class Bot
      * @param  array $options
      * @return \SmartBot\Bot Provide a fluent interface
      */
-    protected function _loadOptions(array $options = array())
+    protected function loadOptions(array $options = array())
     {
         foreach ($options as $key => $option) {
             switch (strtolower($key)) {
@@ -222,7 +222,7 @@ class Bot
      */
     public function getDataPath()
     {
-        return $this -> _dataPath;
+        return $this -> dataPath;
     }
     
     
@@ -233,7 +233,7 @@ class Bot
      */
     public function getBrain()
     {
-        return $this -> _di -> get('Brain');
+        return $this -> di -> get('Brain');
     }
     
     /**
@@ -243,7 +243,7 @@ class Bot
      */
     public function getEntity()
     {
-        return $this -> _entity;
+        return $this -> entity;
     }
     
     /**
@@ -268,7 +268,7 @@ class Bot
             return $this;
         }
         
-        $this -> _contexts[] = $name;
+        $this -> contexts[] = $name;
         
         return $this;
     }
@@ -281,7 +281,7 @@ class Bot
      */
     public function hasContext($context)
     {
-        return in_array($context, $this -> _contexts);
+        return in_array($context, $this -> contexts);
     }
     
     /**
@@ -338,7 +338,7 @@ class Bot
         
         $listener -> initialize();
 
-        $this -> _listenerInstances[] = $listener;
+        $this -> listenerInstances[] = $listener;
         return $this;
     }
     
@@ -362,7 +362,7 @@ class Bot
      */
     public function getListeners()
     {
-        return $this -> _listeners;
+        return $this -> listeners;
     }
     
     /**
@@ -372,7 +372,7 @@ class Bot
      */
     public function getResponders()
     {
-        return $this -> _responders;
+        return $this -> responders;
     }
     
     /**
@@ -396,7 +396,7 @@ class Bot
         $responder = $responders;
         
         foreach ($regex as $expr) {
-            $this -> _listeners[uniqid()] = array(
+            $this -> listeners[uniqid()] = array(
                     'regex' => $expr,
                     'responder' => $responder );
         }
@@ -414,12 +414,12 @@ class Bot
      */
     public function responder($name)
     {
-        if (true == array_key_exists($name, $this -> _responders)) {
-            return $this -> _responders[$name];
+        if (true == array_key_exists($name, $this -> responders)) {
+            return $this -> responders[$name];
         }
         
-        $responder = $this -> _di -> make('Responder');
-        $this -> _responders[$name] = $responder;
+        $responder = $this -> di -> make('Responder');
+        $this -> responders[$name] = $responder;
         
         return $responder;
             
@@ -445,7 +445,7 @@ class Bot
      */
     public function getContexts()
     {
-        return $this -> _contexts;
+        return $this -> contexts;
     }
     
     /**
@@ -456,10 +456,10 @@ class Bot
      */
     public function setEntity($entityUid)
     {
-        $this -> _entity = $entityUid;
+        $this -> entity = $entityUid;
         
         
-        $this -> _conversation -> load($entityUid);
+        $this -> conversation -> load($entityUid);
         
         
         return $this;
