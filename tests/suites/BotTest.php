@@ -13,27 +13,27 @@ class BotTest extends \PHPUnit_Framework_TestCase
      */
     public function testBotInstanciate()
     {
-        $callerId = 123;
+        $entityId = 123;
         
         $options = array(
                 'listener'  => 'SmartBot\Bot\Listener\EnUSListener',
                 'innate'    => __DIR__.'/../data/smart-bot-memory-innate.php',
-                'caller'    => $callerId,
+                'entity'    => $entityId,
                 'context'   => ['Foo:Bar','Foo:Bar','Foo:Baz']
         );
         
         $bot = new \SmartBot\Bot( __DIR__.'/../data/', $options );
         
         $this -> assertInstanceOf('\SmartBot\Bot', $bot );
-        $this -> assertEquals( $bot -> getCaller(), 123 );
+        $this -> assertEquals( $bot -> getEntity(), 123 );
         $this -> assertEquals( $bot -> hasContext('Foo:Bar'), true );
         $this -> assertEquals( $bot -> hasContext('Foo:Boz'), false );
         
         // Learning capabilities
-        $bot -> learn('Caller:birdthdate',  '1975-06-30');
-        $bot -> learn('Caller:name',        'Bruno VIBERT');
+        $bot -> learn('Entity:birdthdate',  '1975-06-30');
+        $bot -> learn('Entity:name',        'Bruno VIBERT');
         
-        $this -> assertEquals( $bot -> getCallerProperty($callerId, 'name'), 'Bruno VIBERT' );
+        $this -> assertEquals( $bot -> getEntityProperty($entityId, 'name'), 'Bruno VIBERT' );
         
         $response = $bot -> getBrain() -> getMemory() -> searchSomeone('Bruno');
         $this -> assertInternalType('array', $response);
@@ -60,9 +60,9 @@ class BotTest extends \PHPUnit_Framework_TestCase
     }
     
     /**
-     * Test no-caller instanciation
+     * Test no-entity instanciation
      */
-    public function testBotInstanciateNoCaller()
+    public function testBotInstanciateNoEntity()
     {
         $bot = new \SmartBot\Bot( __DIR__.'/../data/' );
     

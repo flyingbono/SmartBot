@@ -26,6 +26,7 @@ use SmartBot\Bot\Responder;
 use SmartBot\Bot\ListenerAbstract;
 
 use DI\ContainerBuilder;
+use SmartBot\Bot\Conversation;
 
 /**
  * SmartBot Bot Class.
@@ -64,11 +65,18 @@ class Bot
     protected $_contexts = [];
     
     /**
-     * Bot's caller (who speak with me)
+     * Bot's entity (who speak with me)
      * 
      * @var string
      */
-    protected $_caller = null;
+    protected $_entity = null;
+    
+    /**
+     * Bot's entity conversation context (who speak with me)
+     *
+     * @var Conversation
+     */
+    protected $_conversation = null;
 
     /**
      * Registred listeners dirs
@@ -137,6 +145,8 @@ class Bot
         // Create the acquire responder
         $this -> _responders['acquire'] = $this -> _di -> get('Responder\Acquire');
         
+        $this -> _conversation = $this -> _di -> make('Conversation');
+        
         // Add the  main listener
         $this -> addListenerDir(__DIR__.'/Bot/Listener');
         
@@ -181,8 +191,8 @@ class Bot
                     $this -> addContext($option);
                     break;
                         
-                case 'caller':
-                    $this -> setCaller($option);
+                case 'entity':
+                    $this -> setEntity($option);
                     break;
             }
         }
@@ -224,13 +234,13 @@ class Bot
     }
     
     /**
-     * Get the caller
+     * Get the entity
      * 
      * @return string
      */
-    public function getCaller()
+    public function getEntity()
     {
-        return $this -> _caller;
+        return $this -> _entity;
     }
     
     /**
@@ -272,26 +282,26 @@ class Bot
     }
     
     /**
-     * Get caller ID with the given address
+     * Get entity ID with the given address
      * 
-     * @param  string $address An adress (ie: Caller:#I08098088:name)
-     * @return string The caller ID (ie: #I08098088)
+     * @param  string $address An adress (ie: Entity:#I08098088:name)
+     * @return string The entity ID (ie: #I08098088)
      */
-    public function getCallerId( $address )
+    public function getEntityId( $address )
     {
-        return preg_replace('/caller:([^:]+):.*/i', '\\1', $address);
+        return preg_replace('/entity:([^:]+):.*/i', '\\1', $address);
     }
     
     /**
-     * Get a caller property
+     * Get a entity property
      * 
-     * @param  string $callerId
+     * @param  string $entityId
      * @param  string $property
      * @return mixed
      */
-    public function getCallerProperty( $callerId, $property )
+    public function getEntityProperty( $entityId, $property )
     {
-        $address = sprintf('Caller:%s:%s', $callerId, $property);
+        $address = sprintf('Entity:%s:%s', $entityId, $property);
         
         $item = $this -> getBrain() -> getMemory() -> search($address, true);
         
@@ -397,14 +407,14 @@ class Bot
     }
     
     /**
-     * Find a caller by its name
+     * Find a entity by its name
      * 
-     * @param  string $caller
+     * @param  string $entity
      * @return \SmartBot\Bot\Brain\Memory\Item|\SmartBot\Bot\Brain\Memory\Item[]
      */
-    public function findCaller( $caller )
+    public function findEntity( $entity )
     {
-        $items = $this -> getBrain() -> getMemory() -> searchSomeone($caller);
+        $items = $this -> getBrain() -> getMemory() -> searchSomeone($entity);
 
         return $items;  
     }
@@ -420,14 +430,18 @@ class Bot
     }
     
     /**
-     * Sets the current bot caller
+     * Sets the current bot entity
      * 
-     * @param  string $callerUid
+     * @param  string $entityUid
      * @return \SmartBot\Bot Provide a fluent interface
      */
-    public function setCaller( $callerUid )
+    public function setEntity( $entityUid )
     {
-        $this -> _caller = $callerUid;
+        $this -> _entity = $entityUid;
+        
+        
+        $this -> _conversation -> load($entityUid);
+        
         
         return $this;
     }
@@ -436,22 +450,22 @@ class Bot
      * Talk to the bot
      * 
      * @param  string   $input 
-     * @param  string   $callerUid
+     * @param  string   $entityUid
      * @param  function $callback 
      * @return string|mixed
      */
-    public function talk( $input, $callerUid = null, $callback = null )
+    public function talk( $input, $entityUid = null, $callback = null )
     {
         
-        if (true === is_null($callerUid)) {
-            $callerUid = $this -> getCaller();
+        if (true === is_null($entityUid)) {
+            $entityUid = $this -> getEntity();
         }
 
-        if (true === is_null($callerUid)) {
+        if (true === is_null($entityUid)) {
             return 'Who is talking to me ??';
         }
             
-        $this -> setCaller($callerUid);
+        $this -> setEntity($entityUid);
             
         $output = $this ->  getBrain() -> input($input);
 

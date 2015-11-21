@@ -105,17 +105,17 @@ class Memory extends \SmartBot\Di\Injectable
     public function getAddress( $address )
     {
         $parts = explode(':', $address);
-        if ($parts[0] == 'Caller') {
+        if ($parts[0] == 'Entity') {
             unset($parts[0]);
             
-            $address = join(':', array_merge(array('Caller', $this -> getDi() -> get('Bot')->getCaller() ), $parts));
+            $address = join(':', array_merge(array('Entity', $this -> getDi() -> get('Bot')->getEntity() ), $parts));
         }
         
         return $address;
     }
     
     /**
-     * Search a caller in memory items
+     * Search a entity in memory items
      * 
      * @param  string $someone
      * @return \SmartBot\Bot\Brain\Memory\Item|\SmartBot\Bot\Brain\Memory\Item[]
@@ -130,11 +130,11 @@ class Memory extends \SmartBot\Di\Injectable
             * @var Item $item 
             */
            
-            if (false == $item -> isCaller()) {
+            if (false == $item -> isEntity()) {
                 continue; 
             }
             
-            if (preg_match('/^Caller:([^:]+):(name)$/i', $item -> address)) {
+            if (preg_match('/^Entity:([^:]+):(name)$/i', $item -> address)) {
                 if (strtolower($item -> getValue()) == $someone) {
                     return $item; 
                 } else if (false !== stripos($item -> getValue(), $someone) ) {

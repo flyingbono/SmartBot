@@ -66,13 +66,13 @@ class Item
     public $type = Memory::TYPE_NONE;
     
     /**
-     * Check if the current item is a Caller item
+     * Check if the current item is a Entity item
      * 
      * @return boolean
      */
-    public function isCaller()
+    public function isEntity()
     {
-        return (substr($this -> address, 0, 7) == 'Caller:');
+        return (substr($this -> address, 0, 7) == 'Entity:');
     }
     
     /**

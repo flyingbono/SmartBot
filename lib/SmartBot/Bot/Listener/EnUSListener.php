@@ -61,12 +61,12 @@ class EnUSListener extends ListenerAbstract implements ListenerInterface
     
     function whois( $message, $args)
     {
-        $recipient  = $this ->_smartBot -> findCaller($args[0]);
+        $recipient  = $this ->_smartBot -> findEntity($args[0]);
         
         if ($recipient instanceof Item) {
             // recipent found. maybe confirm ??
-            $recipientId     = $ai -> getCallerId($recipient -> address);
-            // $recipientName   = $ai -> getCallerProperty($recipientId, 'name');
+            $recipientId     = $ai -> getEntityId($recipient -> address);
+            // $recipientName   = $ai -> getEntityProperty($recipientId, 'name');
             
             return $this -> responder('whois-friend') -> handle($message, $args);
             

@@ -16,25 +16,50 @@
  * and is licensed under the MIT license. For more information, see
  * <https://github.com/flyingbono/SmartBot>.
  */
-namespace SmartBot\Bot\Responder;
+namespace SmartBot\Bot\Conversation;
 
-use SmartBot\Bot\Responder;
+use SmartBot\Bot\Brain\Memory;
 
 /**
- * SmartBot Brain Output Class.
+ * SmartBot Conversation Item Class.
  *
  * @author Bruno VIBERT <bruno.vibert@bonobox.fr>
  */
-class Acquire extends Responder
+class Item
 {
+
+    
+    
+    
     /**
+     * The item context
      * 
-     * {@inheritDoc}
-     * @see \SmartBot\Bot\Responder::handle()
+     * @var string
      */
-    public function handle($message, $args = array() )
+    public $context;
+    
+    
+    
+    /**
+     * Memory item factory
+     * 
+     * @param array $data
+     * @return \SmartBot\Bot\Conversation\Item
+     */
+    public static function factory(array $data = array())
     {
-        $this -> getDi() -> get('Brain') -> learn('Entity:'.$args[0], $args[1]);
-        return;
+        $item = new self;
+        foreach ($data as $key => $value) {
+            if (property_exists($item, $key)) {
+//                 if (preg_match(self::DATE_REGEX, $value) ) {
+//                     $value = new \DateTime($value); 
+//                 }
+                
+                $item -> $key = $value;
+            }
+        }
+        
+        return $item;
     }
+    
 }
