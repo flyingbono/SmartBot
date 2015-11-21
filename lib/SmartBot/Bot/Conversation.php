@@ -123,7 +123,7 @@ class Conversation extends Injectable
             return;
         }
         
-        $data   = $this -> _dump();
+        $data   = $this -> dump();
         file_put_contents($this -> memoryFile, $data);
 
         return $this;
