@@ -322,16 +322,16 @@ class Bot
     public function addListener( $listenerClass )
     {
         if (false == class_exists($listenerClass))
-            throw new Exception(sprintf( 'Listener class %s not found', $listenerClass ) );
+            throw new Exception(sprintf('Listener class %s not found', $listenerClass));
         
         if (false == class_implements($listenerClass, '\SmartBot\Bot\ListenerInterface'))
-            throw new Exception(sprintf( 'Listener class %s does not implement SmartBot\Bot\ListenerInterface', $listenerClass ) );
+            throw new Exception(sprintf('Listener class %s does not implement ListenerInterface', $listenerClass));
           
         
         $listener = new $listenerClass($this);
         
         if (false === $listener instanceof ListenerAbstract )
-            throw new Exception(sprintf( 'Listener class %s does not extends SmartBot\Bot\ListenerAbstract', $listenerClass ) );
+            throw new Exception(sprintf('Listener class %s does not extends ListenerAbstract', $listenerClass));
             
         
         $listener -> initialize();
