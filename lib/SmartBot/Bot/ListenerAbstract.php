@@ -99,7 +99,7 @@ abstract class ListenerAbstract
     {
         
         $ref    = new \ReflectionClass(get_class($this));
-        $config = dirname($ref -> getFileName() ).'/Config/'.array_slice(explode('\\', get_class($this)), -1)[0].'.ini';
+        $config = dirname($ref -> getFileName()).'/Config/'.array_slice(explode('\\', get_class($this)), -1)[0].'.ini';
         
         unset($ref);
         

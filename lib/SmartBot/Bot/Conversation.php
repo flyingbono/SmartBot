@@ -25,7 +25,8 @@ use SmartBot\Di\Injectable;
  *
  * @author Bruno VIBERT <bruno.vibert@bonobox.fr>
  */
-class Conversation extends Injectable {
+class Conversation extends Injectable
+{
       
     const CONTEXT_NONE          = 'none';
     const CONTEXT_PERSON        = 'person';
@@ -53,7 +54,7 @@ class Conversation extends Injectable {
         $this -> flush();
         
         $bot     =   $this -> getDi() -> get('Bot');
-        $this -> _memoryFile   =  sprintf('%s/smart-bot-conversation-%s.php', $bot -> getDataPath(), md5($entity) );
+        $this -> _memoryFile   =  sprintf('%s/smart-bot-conversation-%s.php', $bot -> getDataPath(), md5($entity));
         
         
         // loading acquired memory
@@ -85,7 +86,8 @@ class Conversation extends Injectable {
     /**
      * Class destructor. Flush data to memory file
      */
-    public function __destruct(){
+    public function __destruct()
+    {
         $this -> flush();
     }
     
@@ -98,11 +100,11 @@ class Conversation extends Injectable {
     
     
             $data .= sprintf(
-                    "SmartBot\Bot\Conversation\Item::factory(array(
+                "SmartBot\Bot\Conversation\Item::factory(array(
     'context'   => '%s',
     )),",
-                    $item -> context
-                    ).PHP_EOL;
+                $item -> context
+            ).PHP_EOL;
         }
     
         $data .= '];'.PHP_EOL;
