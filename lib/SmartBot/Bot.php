@@ -148,7 +148,7 @@ class Bot
         $this -> _conversation = $this -> _di -> make('Conversation');
         
         // Add the  main listener
-        $this -> addListenerDir(__DIR__.'/Bot/Listener');
+//         $this -> addListenerDir(__DIR__.'/Bot/Listener');
         
         // Initialize the brain
         $this -> _brain -> initialize();
@@ -161,9 +161,13 @@ class Bot
         
         // Check if there is at least 1 listener
         if (count($this -> _listeners) == 0 ) {
-            // add a default listener
-            $listener = new Bot\Listener\EnUSListener($this);
-            $listener -> initialize();
+            
+            // Add the default EnUS listener
+            $this -> addListener('\SmartBot\Bot\Listener\EnUSListener');
+            
+//             // add a default listener
+//             $listener = new Bot\Listener\EnUSListener($this);
+//             $listener -> initialize();
         }
     }
     
@@ -312,12 +316,26 @@ class Bot
     /**
      * Add a listener
      * 
-     * @param  ListenerAbstract $listener
+     * @param  string $listenerClass
      * @return \SmartBot\Bot Provide a fluent interface
      */
-    public function addListener( ListenerAbstract $listener )
+    public function addListener( $listenerClass )
     {
+        if (false == class_exists($listenerClass))
+            throw new Exception(sprintf( 'Listener class %s not found', $listenerClass ) );
         
+        if (false == class_implements($listenerClass, '\SmartBot\Bot\ListenerInterface'))
+            throw new Exception(sprintf( 'Listener class %s does not implement SmartBot\Bot\ListenerInterface', $listenerClass ) );
+          
+        
+        $listener = new $listenerClass($this);
+        
+        if (false === $listener instanceof ListenerAbstract )
+            throw new Exception(sprintf( 'Listener class %s does not extends SmartBot\Bot\ListenerAbstract', $listenerClass ) );
+            
+        
+        $listener -> initialize();
+
         $this -> _listenerInstances[] = $listener;
         return $this;
     }

@@ -91,6 +91,23 @@ abstract class ListenerAbstract
     }
     
     /**
+     * Find and return the listener config file
+     * 
+     * @return string
+     */
+    public function getConfigFile() 
+    {
+        
+        $ref    = new \ReflectionClass(get_class($this));
+        $config = dirname($ref -> getFileName() ).'/Config/'.array_slice(explode('\\', get_class($this)), -1)[0].'.ini';
+        
+        unset($ref);
+        
+        return $config;
+    }
+    
+    
+    /**
      * Load internal listen string stored in the INI file
      * 
      * @throws Exception
@@ -100,10 +117,10 @@ abstract class ListenerAbstract
     {
         $name = array_slice(explode('\\', get_class($this)), -1)[0];
 
-        $iniFile = __DIR__.'/Listener/Config/'.$name .'.ini';
+        $iniFile = $this -> getConfigFile();
 
         if (false == file_exists($iniFile) ) {
-            throw new Exception(sprintf('Strings INI file not found for listener : %s', get_class($this))); 
+            throw new Exception(sprintf('Config file not found for listener : %s', get_class($this))); 
         }
         
             

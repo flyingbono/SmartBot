@@ -27,9 +27,16 @@ interface ListenerInterface
 {
     
     /**
-     * Add listeners
+     * Initialize the listener
      * 
-     * @return SmartBot\Bot\Listener[]
+     * @return \SmartBot\Bot\ListenerAbstract
      */
     public function initialize(); 
+    
+    /**
+     * Get the listener config file
+     * 
+     * @return string
+     */
+    public function getConfigFile();
 }

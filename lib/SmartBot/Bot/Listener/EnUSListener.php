@@ -37,42 +37,42 @@ class EnUSListener extends ListenerAbstract implements ListenerInterface
     public function initialize()
     {
         
-        $ai = $this ->_smartBot;
+        $bot = $this -> _smartBot;
                 
         // Create listeners and associate to responders
-        $ai -> listen(['/__test__/i'], $this->responder('__test__'));
-        $ai -> listen(['/(hello| hi |good morning)/i'], $this->responder('hello'));
-        $ai -> listen(['/what time is it/i'], $this->responder('time'));
-        $ai -> listen(['/my ([a-z]+) is ([a-z]+)/i'], [$this->responder('acquire'),$this->responder('acquired')]);
-        $ai -> listen(['/(what).+(your|ur).+(name).+\?/i'], $this->responder('whoami'));
-        $ai -> listen(['/(who).+(are|r|is).+(you|u).+\?/i'], $this->responder('whoami'));
-        $ai -> listen(
+        $bot -> listen(['/__test__/i'], $this->responder('__test__'));
+        $bot -> listen(['/(hello| hi |good morning)/i'], $this->responder('hello'));
+        $bot -> listen(['/what time is it/i'], $this->responder('time'));
+        $bot -> listen(['/my ([a-z]+) is ([a-z]+)/i'], [$this->responder('acquire'),$this->responder('acquired')]);
+        $bot -> listen(['/(what).+(your|ur).+(name).+\?/i'], $this->responder('whoami'));
+        $bot -> listen(['/(who).+(are|r|is).+(you|u).+\?/i'], $this->responder('whoami'));
+        $bot -> listen(
             ['/(wher).+(are|r).+(you|u).+\?/i', '/(wher).+(you|u).+(leave|come from).+\?/i'],      
             $this->responder('whereami') 
         );
         
-        $ai -> listen(
+        $bot -> listen(
             ['/who is ([a-z ]+) ?/i','/what is ([a-z ]+)/i'],      
             function ($message, $args) {
                     return $this -> whois($message, $args);
             }
         );
+        
+        return $this;
     }
     
     function whois( $message, $args)
     {
-        $recipient  = $this ->_smartBot -> findEntity($args[0]);
+        $recipient  = $this -> _smartBot -> findEntity($args[0]);
         
         if ($recipient instanceof Item) {
             // recipent found. maybe confirm ??
             $recipientId     = $ai -> getEntityId($recipient -> address);
-            // $recipientName   = $ai -> getEntityProperty($recipientId, 'name');
             
             return $this -> responder('whois-friend') -> handle($message, $args);
             
         } else if (is_array($recipient) && count($recipient) > 1) {
             return $this -> responder('whois-many') -> handle($message, $args);
-            //             return $this -> getStrings('whois:many', array($args[1]) );
             
         } else if (is_array($recipient) && count($recipient) == 0 ) {
              
@@ -93,13 +93,11 @@ class EnUSListener extends ListenerAbstract implements ListenerInterface
                     return $this -> responder('noresponse') -> handle($message); 
                 }
                     
-                $phrases = explode('.', $page -> extract);
+                $phrases    = explode('.', $page -> extract);
+                $lines      = explode(PHP_EOL, $phrases[0]);
                  
-                $lines = explode(PHP_EOL, $phrases[0]);
-                 
-                if (count($lines) > 3 ) {
+                if (count($lines) > 3 )
                     $lines = array_slice($lines, 0, 3); 
-                }
                 
                 $params = array(join(' ', $lines), 'https://en.wikipedia.org/wiki/'.$what );
                 return $this -> responder('whois-wiki') -> handle($message, $params);            
