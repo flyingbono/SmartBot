@@ -3,6 +3,7 @@ namespace SmartBot\Tests;
 
 
 use SmartBot\Bot\Utils;
+use SmartBot\Bot\Brain\Memory;
 
 
 /**
@@ -27,9 +28,14 @@ class ListenerTest extends \PHPUnit_Framework_TestCase
         require_once __DIR__.'/../listeners/CustomListener.php';
         $bot -> addListener( 'SmartBot\Bot\Listener\CustomListener' );
         
-        $output = $bot -> talk('foo' );
+        $output = $bot -> talk('foobar' );
+        $this -> assertEquals('foo',$output);
 
+        $bot -> learn('Foo:bar', 'baz', Memory::RANGE_IMMEDIATE );
+        
+        $output = $bot -> talk('foobar' );
         $this -> assertEquals('bar',$output);
+        
         
     }
 }

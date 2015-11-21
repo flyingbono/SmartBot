@@ -20,10 +20,9 @@ namespace SmartBot;
 
 use SmartBot\Bot\Brain;
 use SmartBot\Bot\Exception;
-use SmartBot\Bot\Context;
-use SmartBot\Bot\Utils;
 use SmartBot\Bot\Responder;
 use SmartBot\Bot\ListenerAbstract;
+use SmartBot\Bot\Brain\Memory;
 
 use DI\ContainerBuilder;
 use SmartBot\Bot\Conversation;
@@ -210,9 +209,9 @@ class Bot
      * @param  string $value Value of the item
      * @return \SmartBot\Bot Provide a fluent interface
      */
-    public function learn($what, $value)
+    public function learn($what, $value, $range = Memory::RANGE_LONG)
     {
-        $this -> getBrain() -> learn($what, $value);
+        $this -> getBrain() -> learn($what, $value, $range);
         return $this;
     }
     
