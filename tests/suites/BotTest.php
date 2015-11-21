@@ -57,6 +57,12 @@ class BotTest extends \PHPUnit_Framework_TestCase
         
         $output = $bot -> talk('Hello');
         
+        
+        $output = $bot -> talk('Who is Bill Gates ?');
+        $this -> assertEquals(0, strpos('Wikipedia said', $output));
+
+        
+        
     }
     
     /**
