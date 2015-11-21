@@ -1,7 +1,7 @@
 # SmartBot
-[![Build Status](https://img.shields.io/travis/flyingbono/SmartBot/master.svg)](https://travis-ci.org/flyingbono/SmartBot)
-[![Code Climate](https://codeclimate.com/github/flyingbono/SmartBot/badges/gpa.svg)](https://codeclimate.com/github/flyingbono/SmartBot)
-[![Test Coverage](https://codeclimate.com/github/flyingbono/SmartBot/badges/coverage.svg)](https://codeclimate.com/github/flyingbono/SmartBot/coverage)
+[![Build Status](http://62.210.124.92/badge/?type=build)](https://travis-ci.org/flyingbono/SmartBot)
+[![Code Climate](http://62.210.124.92/badge/?type=gpa)](https://codeclimate.com/github/flyingbono/SmartBot)
+[![Test Coverage](http://62.210.124.92/badge/?type=coverage)](https://codeclimate.com/github/flyingbono/SmartBot/coverage)
 [![Issue Count](https://codeclimate.com/github/flyingbono/SmartBot/badges/issue_count.svg)](https://codeclimate.com/github/flyingbono/SmartBot/issues)
 [![Translations](https://img.shields.io/badge/translations-1-red.svg)](https://github.com/flyingbono/SmartBot/tree/master/lib/SmartBot/Bot/Listener)
 
