@@ -42,14 +42,14 @@ class Memory extends \SmartBot\Di\Injectable
      *
      * @var MemoryItem[]
      */
-    private $_items  = array();
+    private $items  = array();
     
     /**
      * The acquired memory data file
      *
      * @var string
      */
-    private $_acquiredMemoryFile;
+    private $acquiredMemoryFile;
     
     /**
      * Add innate memory items
@@ -63,7 +63,7 @@ class Memory extends \SmartBot\Di\Injectable
                 $item -> range  = self::RANGE_LONG;
                 $item -> type   = self::TYPE_INNATE;
                 
-                $this -> _addItem($item);
+                $this -> addItem($item);
             }
         }
         
@@ -78,17 +78,17 @@ class Memory extends \SmartBot\Di\Injectable
     public function load()
     {
         $bot     =   $this -> getDi() -> get('Bot');
-        $this -> _acquiredMemoryFile   =  $bot -> getDataPath().'/smart-bot-memory-acquired.php';
+        $this -> acquiredMemoryFile   =  $bot -> getDataPath().'/smart-bot-memory-acquired.php';
         
         // loading acquired memory
-        if (file_exists($this -> _acquiredMemoryFile)) {
+        if (file_exists($this -> acquiredMemoryFile)) {
             // Sort item  : recently acquired first ?
-            foreach (include $this -> _acquiredMemoryFile as $item) {
+            foreach (include $this -> acquiredMemoryFile as $item) {
                 $item -> type   = self::TYPE_ACQUIRED;
                 
                 // Forgot item according to range, acquired date and current date ?
                 // Ensure item is valid in current contexts (Entity) ?
-                $this -> _addItem($item);
+                $this -> addItem($item);
             }
         }
         
@@ -124,7 +124,7 @@ class Memory extends \SmartBot\Di\Injectable
         $someone = strtolower($someone);
         $results = array();
         
-        foreach ($this -> _items as $item) {
+        foreach ($this -> items as $item) {
             /**
             * @var Item $item
             */
@@ -159,7 +159,7 @@ class Memory extends \SmartBot\Di\Injectable
             $address = $this -> getAddress($address);
         }
             
-        foreach ($this -> _items as $item) {
+        foreach ($this -> items as $item) {
             /**
             * @var Item $item
             */
@@ -191,7 +191,7 @@ class Memory extends \SmartBot\Di\Injectable
             $item -> address    = $this -> getAddress($address);
             $item -> type       = self::TYPE_ACQUIRED;
             
-            $this -> _items[] = $item;
+            $this -> items[] = $item;
         }
         
         return $item;
@@ -258,9 +258,9 @@ class Memory extends \SmartBot\Di\Injectable
      *
      * @param \SmartBot\Bot\Brain\Memory\Item $item
      */
-    private function _addItem(Item $item)
+    private function addItem(Item $item)
     {
-        $this -> _items[] = $item;
+        $this -> items[] = $item;
     }
     
     /**
@@ -268,12 +268,12 @@ class Memory extends \SmartBot\Di\Injectable
      *
      * @return string
      */
-    private function _dump()
+    private function dump()
     {
         $data  = '<?php'.PHP_EOL;
         $data .= 'return ['.PHP_EOL;
         
-        foreach ($this -> _items as $item) {
+        foreach ($this -> items as $item) {
             /**
              * @var Item $item
              */
@@ -316,20 +316,20 @@ class Memory extends \SmartBot\Di\Injectable
     public function flush()
     {
 
-        $backup = dirname($this -> _acquiredMemoryFile).'/'.
-                    substr(basename($this -> _acquiredMemoryFile), 0, -4).
+        $backup = dirname($this -> acquiredMemoryFile).'/'.
+                    substr(basename($this -> acquiredMemoryFile), 0, -4).
                     '.'.date('Ymdh').'.php';
-        $data   = $this -> _dump();
+        $data   = $this -> dump();
         
-        if (file_exists($this -> _acquiredMemoryFile)) {
+        if (file_exists($this -> acquiredMemoryFile)) {
             // backup memory file
-            @rename($this -> _acquiredMemoryFile, $backup);
+            @rename($this -> acquiredMemoryFile, $backup);
             if (false == file_exists($backup)) {
                 throw new Exception('Cannot flush memory');
             }
         }
         
-        file_put_contents($this -> _acquiredMemoryFile, $data);
+        file_put_contents($this -> acquiredMemoryFile, $data);
         
         return $this;
     }
