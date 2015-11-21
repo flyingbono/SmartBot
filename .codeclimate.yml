@@ -5,7 +5,7 @@ engines:
     enabled: true
     config:
       file_extensions: "php"
-      standard: "Zend"
+      standard: "PSR2"
   phpmd:
     enabled: true
     config:
