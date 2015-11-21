@@ -48,7 +48,7 @@ class Brain extends \SmartBot\Di\Injectable
     /**
      * Brain class constructor
      */
-    public function _construct()
+    public function __construct()
     {
         // injectable properties are not available yet !
         
@@ -181,7 +181,7 @@ class Brain extends \SmartBot\Di\Injectable
     /**
      * Class destructor : flush memory
      */
-    public function _destruct()
+    public function __destruct()
     {
         $this -> flush();
     }
