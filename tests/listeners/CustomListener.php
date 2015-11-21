@@ -39,7 +39,7 @@ class CustomListener extends ListenerAbstract implements ListenerInterface {
         $bot = $this -> smartBot;
         
         // Create listeners and associate to responders
-        $bot -> listen(['/foo/i'], $this->responder('foo'));
+        $bot -> listen(['/foobar/i'], $this->responder('foobar'));
         
         
         return $this;

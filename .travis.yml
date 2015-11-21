@@ -17,5 +17,5 @@ script:
 #  - php ./vendor/bin/phpmd lib/SmartBot text unusedcode,cleancode,design,codesize > phpmd.log
 #  - php ./vendor/bin/phpcbf --standard=PSR2 ./lib/SmartBot/
 #  - php ./vendor/bin/phpcs --report-summary -np --standard=PSR2 ./lib/SmartBot/
-# after_script:
-#  - vendor/bin/test-reporter 
+after_script:
+  - vendor/bin/test-reporter 
