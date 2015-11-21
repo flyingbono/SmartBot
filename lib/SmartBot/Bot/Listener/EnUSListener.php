@@ -67,8 +67,6 @@ class EnUSListener extends ListenerAbstract implements ListenerInterface
         
         if ($recipient instanceof Item) {
             // recipent found. maybe confirm ??
-            $recipientId     = $ai -> getEntityId($recipient -> address);
-            
             return $this -> responder('whois-friend') -> handle($message, $args);
             
         } else if (is_array($recipient) && count($recipient) > 1) {

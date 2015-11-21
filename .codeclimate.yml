@@ -11,7 +11,9 @@ engines:
     config:
       file_extensions: "php"
       rulesets: "unusedcode,cleancode,design,codesize"
-      exclude: "tests/*,vendor/*"
 ratings:
   paths:
   - "lib/SmartBot/**.php"
+exclude_paths:
+  - tests/*
+  - vendor/*

@@ -115,8 +115,6 @@ abstract class ListenerAbstract
      */
     final private function _loadConfig()
     {
-        $name = array_slice(explode('\\', get_class($this)), -1)[0];
-
         $iniFile = $this -> getConfigFile();
 
         if (false == file_exists($iniFile) ) {

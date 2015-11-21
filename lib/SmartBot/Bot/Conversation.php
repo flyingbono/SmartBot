@@ -61,11 +61,7 @@ class Conversation extends Injectable
         if (file_exists($this -> _memoryFile)) {
             echo $this -> _memoryFile;
             foreach (include $this -> _memoryFile as $item) {
-                
-//                 $item -> type   = self::TYPE_ACQUIRED;
-                
-//                 // @todo Forgot item according to range, acquired date and current date ?
-//                 // @todo Ensure item is valid in current contexts (Person) ?
+
                 $this -> _addItem($item);
             }
         }

@@ -73,7 +73,6 @@ class Memory extends \SmartBot\Di\Injectable
     /**
      * Load acquired memory items
      * 
-     * @todo   Sort item  : recently acquired first
      * @return \SmartBot\Bot\Brain\Memory Provide a fluent interface
      */
     public function load() 
@@ -83,12 +82,16 @@ class Memory extends \SmartBot\Di\Injectable
         
         // loading acquired memory
         if (file_exists($this -> _acquiredMemoryFile)) {
+            
+            // Sort item  : recently acquired first ?
             foreach (include $this -> _acquiredMemoryFile as $item) {
+            
+                
                 
                 $item -> type   = self::TYPE_ACQUIRED;
                 
-                // @todo Forgot item according to range, acquired date and current date ?
-                // @todo Ensure item is valid in current contexts (Person) ?
+                // Forgot item according to range, acquired date and current date ?
+                // Ensure item is valid in current contexts (Entity) ?
                 $this -> _addItem($item);
             }
         }
