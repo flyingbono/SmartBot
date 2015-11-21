@@ -15,5 +15,6 @@ ratings:
   paths:
   - "lib/SmartBot/**.php"
 exclude_paths:
-  - tests/*
-  - vendor/*
+  - tests/**
+  - vendor/**
+  - *
