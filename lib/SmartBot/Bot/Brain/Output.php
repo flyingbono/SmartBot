@@ -30,7 +30,7 @@ class Output
      *
      * @var array
      */
-    private $_results = [];
+    private $results = [];
     
     /**
      * Set possible results
@@ -39,7 +39,7 @@ class Output
      */
     public function setResults(array $results = array())
     {
-        $this -> _results = $results;
+        $this -> results = $results;
     }
     
     /**
@@ -50,14 +50,14 @@ class Output
     public function getResult()
     {
         
-        if (count($this -> _results) == 0) {
+        if (count($this -> results) == 0) {
             // what to say...
             return '?';
         }
         
-        $index = array_rand($this -> _results);
+        $index = array_rand($this -> results);
         
-        return $this -> _results[$index];
+        return $this -> results[$index];
     }
     
     /**

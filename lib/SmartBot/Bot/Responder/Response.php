@@ -31,14 +31,14 @@ class Response
      *
      * @var string
      */
-    protected $_rule = null;
+    protected $rule = null;
     
     /**
      * The response
      *
      * @var string
      */
-    protected $_message;
+    protected $message;
     
     /**
      * Class constructor
@@ -48,8 +48,8 @@ class Response
      */
     public function __construct($message, $rule = null)
     {
-        $this -> _rule     = $rule;
-        $this -> _message  = $message;
+        $this -> rule     = $rule;
+        $this -> message  = $message;
         
     }
     
@@ -60,7 +60,7 @@ class Response
      */
     public function getRule()
     {
-        return $this -> _rule;
+        return $this -> rule;
     }
     
     /**
@@ -70,6 +70,6 @@ class Response
      */
     public function getMessage()
     {
-        return $this -> _message;
+        return $this -> message;
     }
 }

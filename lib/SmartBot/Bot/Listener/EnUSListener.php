@@ -37,7 +37,7 @@ class EnUSListener extends ListenerAbstract implements ListenerInterface
     public function initialize()
     {
         
-        $bot = $this -> _smartBot;
+        $bot = $this -> smartBot;
                 
         // Create listeners and associate to responders
         $bot -> listen(['/__test__/i'], $this->responder('__test__'));
@@ -63,7 +63,7 @@ class EnUSListener extends ListenerAbstract implements ListenerInterface
     
     public function whois($message, $args)
     {
-        $recipient  = $this -> _smartBot -> findEntity($args[0]);
+        $recipient  = $this -> smartBot -> findEntity($args[0]);
         
         if ($recipient instanceof Item) {
             // recipent found. maybe confirm ??
@@ -84,7 +84,7 @@ class EnUSListener extends ListenerAbstract implements ListenerInterface
                 $what = urlencode(str_replace(' ', '_', $response -> query -> redirects[0] -> to));
             }
             
-            foreach (get_object_vars($response->query->pages) as $page) {
+            foreach (get_object_vars($response -> query -> pages) as $page) {
                 if (false == isset($page -> extract)) {
                     return $this -> responder('noresponse') -> handle($message);
                 }

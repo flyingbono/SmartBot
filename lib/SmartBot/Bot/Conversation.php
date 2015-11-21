@@ -38,10 +38,10 @@ class Conversation extends Injectable
      *
      * @var string
      */
-    private $_memoryFile;
+    private $memoryFile;
     
     
-    private $_items;
+    private $items;
     
     
     /**
@@ -54,14 +54,14 @@ class Conversation extends Injectable
         $this -> flush();
         
         $bot     =   $this -> getDi() -> get('Bot');
-        $this -> _memoryFile   =  sprintf('%s/smart-bot-conversation-%s.php', $bot -> getDataPath(), md5($entity));
+        $this -> memoryFile   =  sprintf('%s/smart-bot-conversation-%s.php', $bot -> getDataPath(), md5($entity));
         
         
         // loading acquired memory
-        if (file_exists($this -> _memoryFile)) {
-            echo $this -> _memoryFile;
-            foreach (include $this -> _memoryFile as $item) {
-                $this -> _addItem($item);
+        if (file_exists($this -> memoryFile)) {
+            echo $this -> memoryFile;
+            foreach (include $this -> memoryFile as $item) {
+                $this -> addItem($item);
             }
         }
         
@@ -73,9 +73,9 @@ class Conversation extends Injectable
      *
      * @param \SmartBot\Bot\Conversation\Item $item
      */
-    private function _addItem(Item $item)
+    private function addItem(Item $item)
     {
-        $this -> _items[] = $item;
+        $this -> items[] = $item;
     }
     
     /**
@@ -86,12 +86,12 @@ class Conversation extends Injectable
         $this -> flush();
     }
     
-    private function _dump()
+    private function dump()
     {
         $data  = '<?php'.PHP_EOL;
         $data .= 'return ['.PHP_EOL;
     
-        foreach ($this -> _items as $item) {
+        foreach ($this -> items as $item) {
             $data .= sprintf(
                 "SmartBot\Bot\Conversation\Item::factory(array(
     'context'   => '%s',
@@ -113,18 +113,18 @@ class Conversation extends Injectable
      */
     public function flush()
     {
-        if (true === file_exists($this -> _memoryFile) && false === is_writable($this -> _memoryFile)) {
+        if (true === file_exists($this -> memoryFile) && false === is_writable($this -> memoryFile)) {
             throw new Exception('Conversation memory file is not writable');
         }
         
-        if (count($this -> _items)==0) {
-            @unlink($this -> _memoryFile);
+        if (count($this -> items)==0) {
+            @unlink($this -> memoryFile);
             
             return;
         }
         
         $data   = $this -> _dump();
-        file_put_contents($this -> _memoryFile, $data);
+        file_put_contents($this -> memoryFile, $data);
 
         return $this;
     }

@@ -32,21 +32,21 @@ abstract class ListenerAbstract
      *
      * @var \SmartBot\Bot
      */
-    protected $_smartBot;
+    protected $smartBot;
     
     /**
      * Listener configuration (loaded from INI file)
      *
      * @var array
      */
-    protected $_config = array();
+    protected $config = array();
     
     /**
      * Listener's responders
      *
      * @var array
      */
-    protected $_responders = array();
+    protected $responders = array();
     
     /**
      * Class constructor
@@ -55,9 +55,9 @@ abstract class ListenerAbstract
      */
     final public function __construct(\SmartBot\Bot $smartBot)
     {
-        $this -> _smartBot = $smartBot;
+        $this -> smartBot = $smartBot;
         
-        $this -> _loadConfig();
+        $this -> loadConfig();
     }
     
     /**
@@ -68,11 +68,11 @@ abstract class ListenerAbstract
      */
     protected function responder($name)
     {
-        $responder = $this -> _smartBot -> responder($name);
+        $responder = $this -> smartBot -> responder($name);
         
-        if (false == array_key_exists($name, $this -> _responders)) {
+        if (false == array_key_exists($name, $this -> responders)) {
             // append config to responder
-            foreach ($this -> _config as $section => $data) {
+            foreach ($this -> config as $section => $data) {
                 if (preg_match(sprintf('/^responder:%s$/i', $name), $section)) {
                     $responder -> add($data['msg']);
                 }
@@ -83,7 +83,7 @@ abstract class ListenerAbstract
 
             }
 
-            $this -> _responders[$name] = $responder;
+            $this -> responders[$name] = $responder;
         }
         
         return $responder;
@@ -112,7 +112,7 @@ abstract class ListenerAbstract
      * @throws Exception
      * @return \SmartBot\Bot\Responder
      */
-    final private function _loadConfig()
+    final private function loadConfig()
     {
         $iniFile = $this -> getConfigFile();
 
@@ -121,7 +121,7 @@ abstract class ListenerAbstract
         }
         
             
-        $this -> _config = parse_ini_file($iniFile, true);
+        $this -> config = parse_ini_file($iniFile, true);
             
         return $this;
     }
