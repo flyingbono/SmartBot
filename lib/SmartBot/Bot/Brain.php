@@ -18,7 +18,7 @@
  */
 namespace SmartBot\Bot;
 
-use SmartBot\Bot\Exception;
+
 use SmartBot\Bot\Brain\Output;
 use SmartBot\Bot\Brain\Memory;
 
@@ -36,19 +36,19 @@ class Brain extends \SmartBot\Di\Injectable
      * @Inject("Bot")
      * @var           \SmartBot\Bot
      */
-    protected $_smartBot;
+    protected $smartBot;
     
     /**
      * My own memory
      *
      * @var \SmartBot\Bot\Brain\Memory
      */
-    protected $_memory;
+    protected $memory;
     
     /**
      * Brain class constructor
      */
-    public function __construct()
+    public function _construct()
     {
         // injectable properties are not available yet !
         
@@ -62,7 +62,7 @@ class Brain extends \SmartBot\Di\Injectable
     public function initialize()
     {
         
-        $this -> _memory = $this -> _di -> get('Brain\Memory');
+        $this -> memory = $this -> di -> get('Brain\Memory');
 
         return $this;
     }
@@ -74,7 +74,7 @@ class Brain extends \SmartBot\Di\Injectable
      */
     public function load()
     {
-        $this -> _memory -> load();
+        $this -> memory -> load();
         
         $this -> learn('Time:hour', date('H:i'), Memory::RANGE_IMMEDIATE);
         $this -> learn('Time:date', date('d/m/Y'), Memory::RANGE_IMMEDIATE);
@@ -90,7 +90,7 @@ class Brain extends \SmartBot\Di\Injectable
      */
     public function getMemory()
     {
-        return $this -> _memory;
+        return $this -> memory;
     }
     
     /**
@@ -103,7 +103,7 @@ class Brain extends \SmartBot\Di\Injectable
      */
     public function learn($what, $value, $range = Memory::RANGE_LONG)
     {
-        $this -> _memory -> acquire($what, $value, $range);
+        $this -> memory -> acquire($what, $value, $range);
         
         return $this;
     }
@@ -124,17 +124,17 @@ class Brain extends \SmartBot\Di\Injectable
             
             switch (strtolower(trim($method))) {
                 case 'hascontext':
-                    $value      = ($this->_smartBot -> hasContext($value))? ' true ':' false ';
+                    $value      = ($this -> smartBot -> hasContext($value))? ' true ':' false ';
                     $conditions = str_replace($str, $value, $conditions);
                     break;
                         
                 case 'isknown':
-                    $value      = ($this-> _memory -> knows($value))? ' true ':' false ';
+                    $value      = ($this-> memory -> knows($value))? ' true ':' false ';
                     $conditions = str_replace($str, $value, $conditions);
                     break;
                         
                 case 'isnotknown':
-                    $value      = (! $this-> _memory -> knows($value))? ' true ':' false ';
+                    $value      = (! $this-> memory -> knows($value))? ' true ':' false ';
                     $conditions = str_replace($str, $value, $conditions);
                     break;
             }
@@ -156,7 +156,7 @@ class Brain extends \SmartBot\Di\Injectable
         $output = new Output;
                 
         $results = array();
-        foreach ($this -> _smartBot -> getListeners() as $config) {
+        foreach ($this -> smartBot -> getListeners() as $config) {
             if (preg_match($config['regex'], $message, $matches)) {
                 if ($config['responder'] instanceof Responder) {
                     $response = $config['responder'] -> handle($message, array_slice($matches, 1));
@@ -175,13 +175,13 @@ class Brain extends \SmartBot\Di\Injectable
             }
         }
         $output -> setResults($results);
-        return $this -> _memory -> parse((string) $output);
+        return $this -> memory -> parse((string) $output);
     }
     
     /**
      * Class destructor : flush memory
      */
-    public function __destruct()
+    public function _destruct()
     {
         $this -> flush();
     }
@@ -194,7 +194,7 @@ class Brain extends \SmartBot\Di\Injectable
     public function flush()
     {
         
-        $this -> _memory -> flush();
+        $this -> memory -> flush();
         return $this;
     }
 }

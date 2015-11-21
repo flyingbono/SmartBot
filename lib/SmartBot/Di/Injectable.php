@@ -33,7 +33,7 @@ class Injectable
      *
      * @var \DI\Container
      */
-    protected $_di;
+    protected $di;
     
     /**
      * Get the dependency injector container
@@ -42,7 +42,7 @@ class Injectable
      */
     public function getDi()
     {
-        return $this->_di;
+        return $this -> di;
     }
     
     /**
@@ -52,7 +52,7 @@ class Injectable
      */
     protected function setDi(\DI\Container $di)
     {
-        $this->_di = $di;
+        $this -> di = $di;
         return $this;
     }
 }
