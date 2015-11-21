@@ -34,7 +34,7 @@ class Responder extends Injectable
      *
      * @var array
      */
-    protected $_responses = [];
+    protected $responses = [];
     
     /**
      * Class constructor
@@ -59,7 +59,7 @@ class Responder extends Injectable
         }
            
         foreach ($responses as $response) {
-            $this -> _responses[] = new Response($response, $rule);
+            $this -> responses[] = new Response($response, $rule);
         }
         
         return $this;
@@ -72,7 +72,7 @@ class Responder extends Injectable
      */
     public function getResponses()
     {
-        return $this -> _responses;
+        return $this -> responses;
     }
     
     /**
@@ -86,9 +86,9 @@ class Responder extends Injectable
     {
         $message = trim($message); // faked phpmd ;)
         $results = array();
-        foreach ($this -> _responses as $response) {
+        foreach ($this -> responses as $response) {
             if ($this -> getDi() -> get('Brain') -> isRuleSatisfied($response -> getRule())) {
-                $results[] = $this -> _parseArgs($response -> getMessage(), $args);
+                $results[] = $this -> parseArgs($response -> getMessage(), $args);
             }
         }
         
@@ -102,7 +102,7 @@ class Responder extends Injectable
      * @param  array  $args
      * @return string
      */
-    protected function _parseArgs($message, $args)
+    protected function parseArgs($message, $args)
     {
         preg_match_all('/\$([0-9])/', $message, $matches);
         foreach ($matches[0] as $index => $param) {

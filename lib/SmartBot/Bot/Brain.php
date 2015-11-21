@@ -18,7 +18,6 @@
  */
 namespace SmartBot\Bot;
 
-
 use SmartBot\Bot\Brain\Output;
 use SmartBot\Bot\Brain\Memory;
 
