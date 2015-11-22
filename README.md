@@ -1,8 +1,8 @@
 # SmartBot
 [![Build Status](http://62.210.124.92/badge/?type=build)](https://travis-ci.org/flyingbono/SmartBot)
-[![Code Climate](http://62.210.124.92/badge/?type=gpa)](https://codeclimate.com/github/flyingbono/SmartBot)
-[![Test Coverage](http://62.210.124.92/badge/?type=coverage)](https://codeclimate.com/github/flyingbono/SmartBot/coverage)
-[![Issue Count](http://62.210.124.92/badge/?type=issues)](https://codeclimate.com/github/flyingbono/SmartBot)
+[![Code Climate](http://62.210.124.92/badge/?type=cc_gpa)](https://codeclimate.com/github/flyingbono/SmartBot)
+[![Test Coverage](http://62.210.124.92/badge/?type=cc_coverage)](https://codeclimate.com/github/flyingbono/SmartBot/coverage)
+[![Issue Count](http://62.210.124.92/badge/?type=cc_issues)](https://codeclimate.com/github/flyingbono/SmartBot)
 
 Multilinguage bot responder implemented in PHP, with learning capabilities
 
