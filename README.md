@@ -23,7 +23,7 @@ require_once '../vendor/autoload.php';
 $options = array(
 	'listener' 	=> 'SmartBot\Bot\Listener\EnUSListener', // default listener (default: EnUSListener)
 	'innate'	=> 'file.php', // Innate memory data (default: null)
-	'caller'	=> 'CallerUID', // ID of the person talking to the bot (default: null)
+	'entity'	=> 'CallerUID', // ID of the person talking to the bot (default: null)
 	'context'	=> ['Humor:Funny'], // List of the bot contexts (users-defined)
 );
 
