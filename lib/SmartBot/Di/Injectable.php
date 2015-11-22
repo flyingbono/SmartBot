@@ -25,7 +25,6 @@ namespace SmartBot\Di;
  */
 class Injectable
 {
-    
     /**
      * Dependency injector container
      *
@@ -44,5 +43,4 @@ class Injectable
     {
         return $this -> di;
     }
-    
 }
