@@ -45,14 +45,4 @@ class Injectable
         return $this -> di;
     }
     
-    /**
-     * Sets the dependency injector container
-     *
-     * @param \DI\Container $di
-     */
-    protected function setDi(\DI\Container $di)
-    {
-        $this -> di = $di;
-        return $this;
-    }
 }
