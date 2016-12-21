@@ -23,7 +23,7 @@ require_once '../vendor/autoload.php';
 $options = array(
 	'listener' 	=> 'SmartBot\Bot\Listener\EnUSListener', // default listener (default: EnUSListener)
 	'innate'	=> 'file.php', // Innate memory data (default: null)
-	'caller'	=> 'CallerUID', // ID of the person talking to the bot (default: null)
+	'entity'	=> 'CallerUID', // ID of the person talking to the bot (default: null)
 	'context'	=> ['Humor:Funny'], // List of the bot contexts (users-defined)
 );
 
@@ -44,7 +44,7 @@ $bot  -> learn('Myself:name', 'Smart BOT');
 // ...
 
 // Add custom listener (optionnal)
-$bot -> addListener( new MyCustomLister );
+$bot -> addListener( 'SmartBot\Bot\Listener\CustomListener' );
 
 // Add custom contexts
 $bot -> addContext('Time:morning');
@@ -53,7 +53,7 @@ $bot -> addContext(array('Humor:Funny','...'));
 // Sets the user who's talking to the bot (required)
 // It may be the logged user in your app, 
 // or simply the PHP Session ID
-$bot -> setCaller('Bruno VIBERT');
+$bot -> setEntity('Bruno VIBERT');
 
 // Talk to the bot (optionnal, but recommanded ;))
 $response = $bot -> talk('Hello !'); // Hello, Hi...
