@@ -45,9 +45,9 @@ class EnUSListener extends ListenerAbstract implements ListenerInterface
         $bot -> listen(['/what time is it/i'], $this->responder('time'));
         $bot -> listen(['/my ([a-z]+) is ([a-z]+)/i'], [$this->responder('acquire'),$this->responder('acquired')]);
         $bot -> listen(['/(what).+(your|ur).+(name).+\?/i'], $this->responder('whoami'));
-        $bot -> listen(['/(who).+(are|r|is).+(you|u).+\?/i'], $this->responder('whoami'));
+        $bot -> listen(['/(who).+(are|r).+(you|u).+\?/i'], $this->responder('whoami'));
         $bot -> listen(
-            ['/(wher).+(are|r).+(you|u).+\?/i', '/(wher).+(you|u).+(leave|come from).+\?/i'],
+            ['/(wher).+(are|r).+(you|u).+\?/i', '/(wher).+(you|u).+(live|come from).+\?/i'],
             $this->responder('whereami')
         );
         
