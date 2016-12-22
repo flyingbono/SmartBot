@@ -308,7 +308,6 @@ class Bot
         $item = $this -> getBrain() -> getMemory() -> search($address, true);
         
         return $item -> getValue();
-        
     }
     
     /**
@@ -420,8 +419,7 @@ class Bot
         $responder = $this -> di -> make('Responder');
         $this -> responders[$name] = $responder;
         
-        return $responder;
-            
+        return $responder;   
     }
     
     /**

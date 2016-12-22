@@ -79,7 +79,7 @@ class EnUSListener extends ListenerAbstract implements ListenerInterface
             $data = file_get_contents($url);
             $response = json_decode($data);
         
-            $what = $args[0];
+            $what = trim($args[0]);
             if (true == isset($response -> query -> redirects)) {
                 $what = urlencode(str_replace(' ', '_', $response -> query -> redirects[0] -> to));
             }
@@ -96,7 +96,7 @@ class EnUSListener extends ListenerAbstract implements ListenerInterface
                     $lines = array_slice($lines, 0, 3);
                 }
                 
-                $params = array(join(' ', $lines), 'https://en.wikipedia.org/wiki/'.$what );
+                $params = array(join(' ', $lines), 'https://en.wikipedia.org/wiki/'.rawurlencode($what) );
                 return $this -> responder('whois-wiki') -> handle($message, $params);
             }
         
